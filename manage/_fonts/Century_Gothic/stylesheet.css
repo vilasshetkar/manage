@@ -1,0 +1,60 @@
+.featured_property .property_img .slider {
+	height: auto;
+	width: 150px;
+	margin: 0px;
+	padding: 0px;
+	display: block;
+}
+.featured_property .slider.property_img a {
+	margin: 0px;
+	padding: 0px;
+	height: 150px;
+	width: 150px;
+	text-align: center;
+	display: block;
+}
+.content .featured_property table.property-img{
+	float: left;
+	height: 180px;
+	width: 160px;
+	background-color: #FFF;
+	border-top-style: none;
+	border-right-style: none;
+	border-bottom-style: none;
+	border-left-style: none;
+}
+.property-img tr td .property_img .fancybox {
+	display: block;
+	height: 180px;
+	width: 160px;
+}
+.content .featured_property table.property-img tr td {
+	padding: 10px;
+	border-top-style: none;
+	border-right-style: none;
+	border-bottom-style: none;
+	border-left-style: none;
+}
+.main .content .featured_project #slider1 li .project_box table tr td.projslide a {
+	display: block;
+	height: 130px;
+	width: 100%;
+}
+.main .content .featured_project #slider1 li .project_box table tr td.projslide a img {
+	height: auto;
+	width: 130px;
+}
+.main .content .featured_project #slider1 li .project_box table tr .projslide {
+	height: 140px;
+	width: 130px;
+	display: block;
+}
+.main .content .featured_project #slider1 li .project_box table tr td .projslide img {
+	height: 130px;
+	width: 130px;
+}
+.main .content .featured_property .property-img tr td .property_img a {
+	display: block;
+	height: 180px;
+	width: 160px;
+}
