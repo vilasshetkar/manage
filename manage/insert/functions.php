@@ -33,7 +33,7 @@ if(isset($_POST['getlink'])){
 	elseif($_POST['getlink']=="Module"){ 
 		$table = $_SESSION['user_id'].'_module';
 		$link_var = '?MOD=';
-		$where = 'WHERE status="1" AND `category` ="'.$_POST['getlink'].'" AND domain='.$_SESSION['domain'];
+		$where = 'WHERE status="1" AND `category` ="'.$_POST['getlink'].'" AND domain='.$_SESSION['domain'].' || other_domain LIKE "%'.$_SESSION['domain'].'%"';
 
 	}
 	elseif($_POST['getlink']!="ALL"){ 
@@ -48,7 +48,7 @@ if(isset($_POST['getlink'])){
 <?php $category = mysql_query("SELECT category, COUNT(*) FROM `$table` $where GROUP BY `category`") or die('Group Error: '.mysql_error());
 	while($group = mysql_fetch_array($category)){ ?>
 <option style="background-color: #CCC; width:180px" value="" disabled="disabled"><?php echo $group[0]; ?></option>
-	<?php $subgroup = mysql_query("SELECT * FROM `$table` WHERE status='1' AND domain=".$_SESSION['domain']." AND `category`='".$group[0]."'") or die('Object Error: '.mysql_error());
+	<?php $subgroup = mysql_query("SELECT * FROM `$table` WHERE status='1' AND domain=".$_SESSION['domain']." AND `category`='".$group[0]) or die('Object Error: '.mysql_error());
 	while($object = mysql_fetch_array($subgroup)){ ?>
 <option value="<?php echo $link_var.$object['id'];?>" ><?php echo substr($object['title'],0,40);?></option>
             

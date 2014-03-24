@@ -40,8 +40,8 @@ page_protect();
     <link href="../../_script/Spray/SpryValidationTextarea.css" rel="stylesheet" type="text/css" />
     <!-- InstanceEndEditable -->
 <!--*********************>> Web Editor Tiny MCE Script << **************************************************** -->
-<script type="text/javascript" src="/manage/_script/jquery-1.6.2.min.js"></script>
-<script type="text/javascript" src="/manage/tiny_mce/tiny_mce.js"></script>
+<script type="text/javascript" src="../../_script/jquery-1.6.2.min.js"></script>
+<script type="text/javascript" src="../../tiny_mce/tiny_mce.js"></script>
 <script type="text/javascript">
 tinyMCE.init({
         // General options
@@ -87,13 +87,11 @@ tinyMCE.init({
 <!-- ************>>> this script is used Highlight a ACTIVE LINK <<**************** -->
 <script type="text/javascript">
 $(document).ready(function(){
-    $(".mainmenu li:first a").addClass("active");
-
-  $(".mainmenu li a").click(function(){
-	$(".mainmenu li a").removeClass("active");
-    $(this).addClass("active");
-
-  });
+$(".mainmenu a").each(function() {   
+    if (this.href == window.location.href) {
+        $(this).addClass("active");
+    }
+});
 // This function is used for displaying submenu with jQuery and css ***************************************************
 	$(".mainmenu li ul").hide();
     $(".mainmenu li").hover(function(){
@@ -265,6 +263,7 @@ a:hover, a:active, a:focus { /* this group of selectors will give a keyboard nav
 	margin-right: auto;
 	margin-left: auto;
 	float: left;
+	line-height: 140%;
 }
 
 /* ~~ This grouped selector gives the lists in the .content area space ~~ */
@@ -381,8 +380,8 @@ ul.nav a:hover, ul.nav a:active, ul.nav a:focus { /* this changes the background
 }
 .mainmenu li a {
 	color: #FFF;
+	background-color: #336;
 	text-decoration: none;
-	background-color: #F30;
 	padding-top: 5px;
 	padding-right: 10px;
 	padding-bottom: 5px;
@@ -402,11 +401,11 @@ ul.nav a:hover, ul.nav a:active, ul.nav a:focus { /* this changes the background
 }
 .mainmenu li a:hover {
 	color: #333;
-	background-color: #FF6;
+	background-color: #E9A6FF;
 }
 .mainmenu li a.active {
-	color: #FFF;
-	background-color: #306;
+	color: #333;
+	background-color: #E9A6FF;
 }
 .mainmenu li ul {
 	list-style-type: none;
@@ -440,28 +439,37 @@ ul.nav a:hover, ul.nav a:active, ul.nav a:focus { /* this changes the background
 .mainmenu li ul li a {
 	border-top-style: none;
 	border-right-style: none;
-	border-bottom-style: none;
+	border-bottom-style: solid;
 	border-left-style: none;
-	background-color: #F30;
 	color: #FFF;
+	background-color: #336;
 	/* [disabled]height: 20px; */
 	padding-top: 5px;
 	padding-right: 10px;
 	padding-bottom: 5px;
 	padding-left: 10px;
 	display: block;
+	border-bottom-width: .05em;
+	border-bottom-color: #FFF;
+}
+.mainmenu li ul li a {
+	border-top-style: solid;
+	color: #FFF;
+	background-color: #336;
+	border-top-width: .1em;
+	border-top-color: #FFF;
 }
 .mainmenu li ul li a:hover {
-	color: #006;
-	background-color: #FF9;
+	color: #333;
+	background-color: #E9A6FF;
 }
 .mainmenu li ul li a.active:hover {
-	color: #006;
-	background-color: #FF9;
+	color: #333;
+	background-color: #E9A6FF;
 }
 .mainmenu li ul li a.active {
-	color: #FFF;
-	background-color: #F30;
+	color: #333;
+	background-color: #E9A6FF;
 }
 .content table.border {
 	width: 100%;
@@ -511,7 +519,7 @@ ul.nav a:hover, ul.nav a:active, ul.nav a:focus { /* this changes the background
     
     <body>
     <div class="container">
-    <div class="viewsite"><?php if(isset($_SESSION['domain_name'])){ echo'<a href="'.$_SESSION['domain_name'].'/index.php" target="_blank">View Site</a>';}?></div>
+    <div class="viewsite"><?php if(isset($_SESSION['domain_name'])){ echo'<a href="http://'.$_SESSION['domain_name'].'/index.php" target="_blank">View Site</a>';}?></div>
     <div class="header">
     <h2>
     Welcome <?php if(isset($_SESSION['user_name'])){echo $_SESSION['user_name'];}?>
@@ -526,33 +534,7 @@ $result = mysql_query("SELECT * FROM `user_sites` WHERE id=".$_SESSION['domain']
     </div>
     <table width="100%" border="0" cellpadding="0" cellspacing="0">
       <tr>
-        <td width="18%" rowspan="2" align="left" valign="top" bgcolor="#EADCAE">
-        <div class="sidebar1">
-          <ul class="nav">
-            <li><a href="../../index.php">Home</a></li>
-            <li><a href="../../insert/editcategory.php"> Category </a></li>
-            <li><a href="../../insert/editarticle.php"> Article</a></li>
-            <li><a href="../../insert/menutype.php">Menu Type</a></li>
-            <li><a href="../../insert/editmenu.php"> Menu</a></li>
-            <li> <a href="../../upload/upload.php"> Media</a></li>
-            <li><a href="../../module/ad_management/view-ads.php">Ad Management</a></li>
-            <li><a href="../../module/view-module.php">Modules</a> </li>
-            <li> <a href="../../login/logout.php">Log Out</a> </li>
-            <p>
-              <?php
-if (checkAdmin()) {
-/*******************************END**************************/
-?>
-            </p>
-            <p>&nbsp; </p>
-            <p> <a href="../../login/admin.php">Admin CP </a></p>
-            <?php } ?>
-          </ul>
-          <p></p>
-          <!-- end .sidebar1 -->
-        </div>
-        </td>
-        <td width="82%" align="center" valign="top"><div class="mainbar">
+        <td width="100%" align="center" valign="top"><div class="mainbar">
           <ul class="mainmenu">
             <li><a href="responses.php">My Responses</a>
               <ul>
@@ -587,21 +569,10 @@ if (checkAdmin()) {
 		<div class="content">
 <!-- InstanceBeginEditable name="content" -->
 <?php // ******************** ARTICLE INSERT CODE *************************************************************************
+
+
 if (isset($_POST['insert'])=="newproperty") {
 
-$sql="INSERT INTO `$_SESSION[user_id]_real_property` (`id`, `user_id`, `featured`, `property_for`, `category`, `type`, `buildup_area`, `build_unit`, `land_area`, `land_unit`, `carpet_area`, `carpet_unit`, `price`, `currency`, `bedrooms`, `bathrooms`, `country`, `state`, `city`, `address`, `location`, `title`, `society_name`, `prop_desc`, `cont_name`, `contact`, `email`, `cont_address`, `prop_age`, `furnished`, `transaction_type`, `prop_owner`, `floors`, `on_floor`, `parking`, `hospital`, `airport`, `railway`, `school`, `power`, `water`, `lift`, `res_parking`, `security`, `maintenance`, `gym`, `park`, `tarrace`, `swimming`, `quarters`, `club`, `facing`, domain, meta_desc, meta_key) VALUES (NULL, '$_POST[user_id]', '$_POST[featured]', '$_POST[property_for]', '$_POST[category]', '$_POST[type]', '$_POST[build_area]', '$_POST[build_unit]', '$_POST[land_area]', '$_POST[land_unit]', '$_POST[carpet_area]', '$_POST[carpet_unit]', '$_POST[price]', '$_POST[currency]', '$_POST[bedrooms]', '$_POST[bathrooms]', '$_POST[country]', '$_POST[state]', '$_POST[city]', '$_POST[address]', '$_POST[location]', '$_POST[title]', '$_POST[society_name]', '$_POST[prop_desc]', '$_POST[cont_name]', '$_POST[contact_no]', '$_POST[email]', '$_POST[cont_address]', '$_POST[prop_age]', '$_POST[furnished]', '$_POST[transaction_type]', '$_POST[prop_owner]', '$_POST[floors]', '$_POST[on_floor]', '$_POST[parking]', '$_POST[hospital]', '$_POST[airport]', '$_POST[railway]', '$_POST[school]', '$_POST[power]', '$_POST[water]', '$_POST[lift]', '$_POST[res_parking]', '$_POST[security]', '$_POST[maintenance]', '$_POST[gym]', '$_POST[park]', '$_POST[tarrace]', '$_POST[swimming]', '$_POST[quarters]', '$_POST[club]', '$_POST[facing]','$_SESSION[domain]','$_POST[meta_desc]','$_POST[meta_key]');";
-if (!mysql_query($sql))
-  {
-  die('Error: ' . mysql_error());
-  }
-echo "1 New Article Added Sucessfully!";
-		$prop_id = mysql_insert_id();
-
-}
-?>
-
-<!-- Project Image Upload Script -->
-<?php
 if(isset($_FILES['prop_img'])){
     $errors= array();
 	foreach($_FILES['prop_img']['tmp_name'] as $key => $tmp_name ){
@@ -615,13 +586,9 @@ if(isset($_FILES['prop_img'])){
 		if ((!$file_type == "image/jpeg") || (!$file_type == "image/png") || (!$file_type == "image/gif")){
 			$errors[]='<strong>File type must be .gif, .png, .jpeg, .jpg only</strong>';			
 				};
+				
 
-		$fname_chk = mysql_query( "SELECT `file_name` FROM $_SESSION[user_id]_upload_data WHERE file_name='".$file_name."'") or die(mysql_error());
-		$fname_exist = mysql_num_rows($fname_chk);
-		if ($fname_exist > 0){ $errors[]='File Already Exist. Please select another file.';}
-		
-        $query="INSERT into $_SESSION[user_id]_upload_data (`domain`,`file_name`,`file_size`,`file_type`, `file_for`, path) VALUES('$_SESSION[domain]','$file_name','$file_size','$file_type', 'prop-".$prop_id."-prop_img', '$_POST[path]/$file_name'); " ;
-        $desired_dir="$_POST[dir]"; ///admin/uploaded/
+       $desired_dir= $root."/".$propImgFolder; 
         if(empty($errors)==true){
             if(is_dir($desired_dir)==false){
                 mkdir("$desired_dir", 0700);		// Create directory if it does not exist
@@ -630,23 +597,42 @@ if(isset($_FILES['prop_img'])){
                 move_uploaded_file($file_tmp,"$desired_dir/".$file_name);
             }else{									// rename the file if another one exist
                 
-				$new_dir="$desired_dir/".time().$file_name;
-                 rename($file_tmp,$new_dir) ;				
+				$new_file="$desired_dir/".time().$file_name;
+                 rename($file_tmp,$new_file) ;				
             }
-		 mysql_query($query) or die(mysql_error());			
         }else{
-                echo $errors;
+                die($errors);
         }
     }
 	if(empty($errors)){
-		echo "Files uploaded Successfully";
+		echo "Files uploaded Successfully ";
 	}
 }
+$posts = $_POST;
+foreach ($posts as $i => $post) {
+   if (empty($post[$i]))
+      $post[$i] = NULL;
+}
+$otherDomain = implode(',', $_POST['other_domain']);
+$sql="INSERT INTO `$_SESSION[user_id]_real_property` (`id`, `user_id`, `featured`, `prop_image`, `property_for`, `category`, `type`, `buildup_area`, `build_unit`, `land_area`, `land_unit`, `carpet_area`, `carpet_unit`, `price`, `bedrooms`, `bathrooms`, `country`, `state`, `city`, `address`, `location`, `title`, `society_name`, `prop_desc`, `cont_name`, `contact`, `email`, `cont_address`, `prop_age`, `furnished`, `transaction_type`, `prop_owner`, `floors`, `on_floor`, `parking`, `hospital`, `airport`, `railway`, `school`, `power`, `water`, `lift`, `res_parking`, `security`, `maintenance`, `gym`, `park`, `tarrace`, `swimming`, `quarters`, `club`, `facing`, meta_desc, meta_key, `other_domain`) VALUES (NULL, '$_POST[user_id]', '$_POST[featured]','http://$new_file', '$_POST[property_for]', '$_POST[category]', '$_POST[type]', '$_POST[build_area]', '$_POST[build_unit]', '$_POST[land_area]', '$_POST[land_unit]', '$_POST[carpet_area]', '$_POST[carpet_unit]', '$_POST[price]',  '$_POST[bedrooms]', '$_POST[bathrooms]', '$_POST[country]', '$_POST[state]', '$_POST[city]', '$_POST[address]', '$_POST[location]', '$_POST[title]', '$_POST[society_name]', '$_POST[prop_desc]', '$_POST[cont_name]', '$_POST[contact_no]', '$_POST[email]', '$_POST[cont_address]', '$_POST[prop_age]', '$_POST[furnished]', '$_POST[transaction_type]', '$_POST[prop_owner]', '$_POST[floors]', '$_POST[on_floor]', '$_POST[parking]', '$_POST[hospital]', '$_POST[airport]', '$_POST[railway]', '$_POST[school]', '$_POST[power]', '$_POST[water]', '$_POST[lift]', '$_POST[res_parking]', '$_POST[security]', '$_POST[maintenance]', '$_POST[gym]', '$_POST[park]', '$_POST[tarrace]', '$_POST[swimming]', '$_POST[quarters]', '$_POST[club]', '$_POST[facing]','$_POST[meta_desc]','$_POST[meta_key]','$otherDomain');";
+if (!mysql_query($sql))
+  {
+  die('Error: ' . mysql_error());
+  }
+echo "1 New Article Added Sucessfully!";
+		$prop_id = mysql_insert_id();
+
+}
+?>
+
+<!-- Project Image Upload Script -->
+<?php
 ?>
 
 
 
 <div class="content">
+
   <form id="form1" name="form1" method="post" action="" enctype="multipart/form-data" >
     <table class="border">
       <tbody>
@@ -676,41 +662,11 @@ if(isset($_FILES['prop_img'])){
           <td id="text_cat_id_id">* Property Category</td>
           <td><span id="spryselect1">
             <select name="category" id="category">
-              
-              
-                 
-                
-              
               <option value="">Select Category</option>
-              
-              
-                 
-                
-              
               <option value="Residential Property">Residential Property</option>
-              
-              
-                 
-                
-              
               <option value="Commercial Property">Commercial Property</option>
-              
-              
-                 
-                
-              
               <option value="Agricultural land">Agricultural land</option>
-              
-              
-                 
-                
-              
               <option value="Industrial Property">Industrial Property</option>
-              
-              
-                 
-              
-            
             </select>
 <span class="selectRequiredMsg">Please select a Category.</span></span></td>
           </tr>
@@ -1934,6 +1890,7 @@ if(isset($_FILES['prop_img'])){
         
              			
           
+
       </select></td>
           </tr>
         <tr valign="top">
@@ -2583,6 +2540,24 @@ if(isset($_FILES['prop_img'])){
               <tr></tr>
               </tbody>
             </table></td>
+          </tr>
+        <tr valign="top">
+          <td colspan="3"><h1>Select Sites:</h1></td>
+        </tr>
+        <tr valign="top">
+          <td>&nbsp;</td>
+          <td colspan="2"><table width="98%" border="1" bordercolor="#CCCCCC">
+            <tbody>
+<?php  $sql = mysql_query("SELECT * FROM user_sites WHERE user_id = '$_SESSION[user_id]' AND status = '1'") or die(mysql_error()); ?>
+<?php		while($row = mysql_fetch_array($sql)){ ?>
+<tr><td>
+<label><input type="checkbox" name="other_domain[]" value="<?php echo $row['domain'] ?>" <?php if($row['domain']==$_SERVER['HTTP_HOST']) { echo "CHECKED"; } ?> /> <?php echo $row['domain'] ?></label>
+</td></tr><?php } ?>
+
+                
+            </tbody>
+          </table>
+          </td>
           </tr>
         <tr valign="top">
           <td>&nbsp;</td>

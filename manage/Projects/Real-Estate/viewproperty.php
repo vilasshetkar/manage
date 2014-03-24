@@ -39,8 +39,8 @@ include 'other-domain.php';
     </style>
     <!-- InstanceEndEditable -->
 <!--*********************>> Web Editor Tiny MCE Script << **************************************************** -->
-<script type="text/javascript" src="/manage/_script/jquery-1.6.2.min.js"></script>
-<script type="text/javascript" src="/manage/tiny_mce/tiny_mce.js"></script>
+<script type="text/javascript" src="../../_script/jquery-1.6.2.min.js"></script>
+<script type="text/javascript" src="../../tiny_mce/tiny_mce.js"></script>
 <script type="text/javascript">
 tinyMCE.init({
         // General options
@@ -86,13 +86,11 @@ tinyMCE.init({
 <!-- ************>>> this script is used Highlight a ACTIVE LINK <<**************** -->
 <script type="text/javascript">
 $(document).ready(function(){
-    $(".mainmenu li:first a").addClass("active");
-
-  $(".mainmenu li a").click(function(){
-	$(".mainmenu li a").removeClass("active");
-    $(this).addClass("active");
-
-  });
+$(".mainmenu a").each(function() {   
+    if (this.href == window.location.href) {
+        $(this).addClass("active");
+    }
+});
 // This function is used for displaying submenu with jQuery and css ***************************************************
 	$(".mainmenu li ul").hide();
     $(".mainmenu li").hover(function(){
@@ -264,6 +262,7 @@ a:hover, a:active, a:focus { /* this group of selectors will give a keyboard nav
 	margin-right: auto;
 	margin-left: auto;
 	float: left;
+	line-height: 140%;
 }
 
 /* ~~ This grouped selector gives the lists in the .content area space ~~ */
@@ -380,8 +379,8 @@ ul.nav a:hover, ul.nav a:active, ul.nav a:focus { /* this changes the background
 }
 .mainmenu li a {
 	color: #FFF;
+	background-color: #336;
 	text-decoration: none;
-	background-color: #F30;
 	padding-top: 5px;
 	padding-right: 10px;
 	padding-bottom: 5px;
@@ -401,11 +400,11 @@ ul.nav a:hover, ul.nav a:active, ul.nav a:focus { /* this changes the background
 }
 .mainmenu li a:hover {
 	color: #333;
-	background-color: #FF6;
+	background-color: #E9A6FF;
 }
 .mainmenu li a.active {
-	color: #FFF;
-	background-color: #306;
+	color: #333;
+	background-color: #E9A6FF;
 }
 .mainmenu li ul {
 	list-style-type: none;
@@ -439,28 +438,37 @@ ul.nav a:hover, ul.nav a:active, ul.nav a:focus { /* this changes the background
 .mainmenu li ul li a {
 	border-top-style: none;
 	border-right-style: none;
-	border-bottom-style: none;
+	border-bottom-style: solid;
 	border-left-style: none;
-	background-color: #F30;
 	color: #FFF;
+	background-color: #336;
 	/* [disabled]height: 20px; */
 	padding-top: 5px;
 	padding-right: 10px;
 	padding-bottom: 5px;
 	padding-left: 10px;
 	display: block;
+	border-bottom-width: .05em;
+	border-bottom-color: #FFF;
+}
+.mainmenu li ul li a {
+	border-top-style: solid;
+	color: #FFF;
+	background-color: #336;
+	border-top-width: .1em;
+	border-top-color: #FFF;
 }
 .mainmenu li ul li a:hover {
-	color: #006;
-	background-color: #FF9;
+	color: #333;
+	background-color: #E9A6FF;
 }
 .mainmenu li ul li a.active:hover {
-	color: #006;
-	background-color: #FF9;
+	color: #333;
+	background-color: #E9A6FF;
 }
 .mainmenu li ul li a.active {
-	color: #FFF;
-	background-color: #F30;
+	color: #333;
+	background-color: #E9A6FF;
 }
 .content table.border {
 	width: 100%;
@@ -507,7 +515,7 @@ ul.nav a:hover, ul.nav a:active, ul.nav a:focus { /* this changes the background
     
     <body>
     <div class="container">
-    <div class="viewsite"><?php if(isset($_SESSION['domain_name'])){ echo'<a href="'.$_SESSION['domain_name'].'/index.php" target="_blank">View Site</a>';}?></div>
+    <div class="viewsite"><?php if(isset($_SESSION['domain_name'])){ echo'<a href="http://'.$_SESSION['domain_name'].'/index.php" target="_blank">View Site</a>';}?></div>
     <div class="header">
     <h2>
     Welcome <?php if(isset($_SESSION['user_name'])){echo $_SESSION['user_name'];}?>
@@ -522,33 +530,7 @@ $result = mysql_query("SELECT * FROM `user_sites` WHERE id=".$_SESSION['domain']
     </div>
     <table width="100%" border="0" cellpadding="0" cellspacing="0">
       <tr>
-        <td width="18%" rowspan="2" align="left" valign="top" bgcolor="#EADCAE">
-        <div class="sidebar1">
-          <ul class="nav">
-            <li><a href="../../index.php">Home</a></li>
-            <li><a href="../../insert/editcategory.php"> Category </a></li>
-            <li><a href="../../insert/editarticle.php"> Article</a></li>
-            <li><a href="../../insert/menutype.php">Menu Type</a></li>
-            <li><a href="../../insert/editmenu.php"> Menu</a></li>
-            <li> <a href="../../upload/upload.php"> Media</a></li>
-            <li><a href="../../module/ad_management/view-ads.php">Ad Management</a></li>
-            <li><a href="../../module/view-module.php">Modules</a> </li>
-            <li> <a href="../../login/logout.php">Log Out</a> </li>
-            <p>
-              <?php
-if (checkAdmin()) {
-/*******************************END**************************/
-?>
-            </p>
-            <p>&nbsp; </p>
-            <p> <a href="../../login/admin.php">Admin CP </a></p>
-            <?php } ?>
-          </ul>
-          <p></p>
-          <!-- end .sidebar1 -->
-        </div>
-        </td>
-        <td width="82%" align="center" valign="top"><div class="mainbar">
+        <td width="100%" align="center" valign="top"><div class="mainbar">
           <ul class="mainmenu">
             <li><a href="responses.php">My Responses</a>
               <ul>
@@ -625,7 +607,7 @@ echo '<script type="text/javascript">window.history.go(-1);</script>';
 <div class="content">
   <!-- ************Edit Menu Function ************************************************************************************ -->
   <?php 
-$result = mysql_query("SELECT * FROM `$_SESSION[user_id]_real_property` WHERE domain=$_SESSION[domain] || `other_domain` LIKE '%".$_SESSION['domain']."%' ORDER BY `status` DESC") ;
+$result = mysql_query("SELECT * FROM `$_SESSION[user_id]_real_property` ORDER BY `status` DESC") ;
 ?>
   <table width="90%" border="0" align="center" cellspacing="5">
     <tr>
@@ -679,7 +661,7 @@ $rows = mysql_num_rows($res); echo '<a href="responses.php?respo_for=property&am
       <td align="left" valign="top"> Type</td>
       <td align="left" valign="top"><?php echo $row['type'];?></td>
       <td colspan="2" rowspan="2" align="center" valign="middle"><a href="editproperty.php?prop_copy=<?php echo $row['id'];?>" id="mname2">Make Copy</a></td>
-      <td width="15%" align="left" valign="top"><a class="view-property" href="/manage/upload/rename.php?prop_prop_img=<?php echo $row['id']?>" title="Project Images"> Property Image</a></td>
+      <td width="15%" align="left" valign="top"><a class="view-property" href="../../upload/rename.php?prop_prop_img=<?php echo $row['id']?>" title="Project Images"> Property Image</a></td>
       </tr>
     <tr>
       <td align="left" valign="top"> Address</td>

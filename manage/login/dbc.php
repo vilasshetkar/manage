@@ -1,4 +1,9 @@
 <?php
+// Report all errors except E_NOTICE   
+error_reporting(E_ALL ^ E_NOTICE);
+
+
+
 /*************** PHP LOGIN SCRIPT V 2.3*********************
 (c) Balakrishnan 2010. All Rights Reserved
 
@@ -24,11 +29,12 @@ Note: If you use cpanel, the name will be like account_database
 *************************************************************/
 $root = $_SERVER['DOCUMENT_ROOT'];
 global $root;
+$propImgFolder = "uploaded-files";
 
-define ("DB_HOST", "localhost"); // set database host
-define ("DB_USER", "g150112s_real"); // set database user
-define ("DB_PASS","real@1900"); // set database password
-define ("DB_NAME","g150112s_test"); // set database name
+define ("DB_HOST", "169.254.182.25"); // set database host
+define ("DB_USER", "yogesh"); // set database user
+define ("DB_PASS","root"); // set database password
+define ("DB_NAME","prop"); // set database name
 
 $link = mysql_connect(DB_HOST, DB_USER, DB_PASS) or die("Couldn't make connection.");
 $db = mysql_select_db(DB_NAME, $link) or die("Couldn't select database");
@@ -112,7 +118,7 @@ if (!isset($_SESSION['user_id']) && !isset($_SESSION['user_name']) && !isset($_S
 	   }
 
   } else {
-	header("Location: /manage/login/login.php");
+	header("Location: /manage/manage/login/login.php");
 	exit();
 	}
 }
