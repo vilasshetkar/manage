@@ -20,7 +20,7 @@ tinyMCE.init({
         elements : "content,amenities,specifications,availability,contact,overview",
         theme : "advanced",
 		convert_urls: false,
-        plugins : "autolink,lists,spellchecker,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template",
+        plugins : "autolink,lists,spellchecker,pagebreak,style,layer,save,table,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template",
 
         // Theme options
         theme_advanced_buttons1 : "save,newdocument,|,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,styleselect,formatselect,fontselect,fontsizeselect",
@@ -551,7 +551,7 @@ if(isset($_FILES['proj_img'])){
 		$file_size =$_FILES['proj_img']['size'];
 		$file_tmp =$_FILES['proj_img']['tmp_name'];
 		$file_type=$_FILES['proj_img']['type'];
-        if($file_size > 10097152){
+        if($file_size > 2097152){
 			$errors[]='File size must be less than 2 MB';
         }
 		if ((!$file_type == "image/jpeg") || (!$file_type == "image/png") || (!$file_type == "image/gif")){
@@ -839,17 +839,17 @@ if(!$sql){
       <tr valign="top">
         <td>&nbsp;</td>
         <td>Location Map</td>
-        <td colspan="8"><input name="location_map" type="file" required="required" id="location_map"/></td>
+        <td colspan="8"><input name="location_map" type="file" id="location_map"/></td>
       </tr>
       <tr valign="top">
         <td>&nbsp;</td>
         <td>layout_map</td>
-        <td colspan="8"><input name="layout_map" type="file" required="required" id="layout_map"/></td>
+        <td colspan="8"><input name="layout_map" type="file" id="layout_map"/></td>
       </tr>
       <tr valign="top">
         <td>&nbsp;</td>
         <td>floor_plans</td>
-        <td colspan="8"><input name="floor_plans" type="file" required="required" id="floor_plans"/></td>
+        <td colspan="8"><input name="floor_plans" type="file" id="floor_plans"/></td>
       </tr>
       <tr valign="top" id="bedroomshide2">
         <td>&nbsp;</td>
@@ -894,7 +894,7 @@ if(!$sql){
         <td> 
           <input name="user_id" type="hidden" id="user_id" value="<?php echo $_SESSION['user_id']; ?>" />
           <input name="insert" type="hidden" id="insert" value="addproject" /></td>
-        <td colspan="8"><input name="submit" type="submit" id="submit" style="width:150px; height:30px" value="Submit" /></td>
+        <td colspan="8"><input name="submit" type="submit" id="submit" style="width:150px; height:30px" value="Submit" onclick="tinyMCE.triggerSave();" /></td>
       </tr>
     </tbody>
   </table>

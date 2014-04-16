@@ -47,7 +47,7 @@ tinyMCE.init({
         elements : "content,amenities,specifications,availability,contact,overview",
         theme : "advanced",
 		convert_urls: false,
-        plugins : "autolink,lists,spellchecker,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template",
+        plugins : "autolink,lists,spellchecker,pagebreak,style,layer,save,table,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template",
 
         // Theme options
         theme_advanced_buttons1 : "save,newdocument,|,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,styleselect,formatselect,fontselect,fontsizeselect",
@@ -568,6 +568,12 @@ $result = mysql_query("SELECT * FROM `user_sites` WHERE id=".$_SESSION['domain']
 		<div class="content">
 <!-- InstanceBeginEditable name="content" -->
 <!-- ************>>> This script is used for View property or project in fancy box <<**************** -->
+<style>
+.cellborder tr.top-border td {
+	border-top:2px solid #666 !important;
+}
+</style>
+
 <script type="text/javascript" src="../../_script/jquery-1.6.2.min.js"></script>
 <link rel="stylesheet" type="text/css" href="../../_script/fancy-box/jquery.fancybox.css"/>
 <script type="text/javascript" src="../../_script/fancy-box/jquery.fancybox.js"></script>
@@ -596,6 +602,59 @@ $result = mysql_query("SELECT * FROM `user_sites` WHERE id=".$_SESSION['domain']
 			});
 			});
 </script>
+<script type="text/javascript">
+$(document).ready(function(e) {
+	$("#status").change(function() {
+		    var url = window.location.href;
+			if((url.search("viewStatus") === -1) && (url.search("[?]") === -1)){
+				url = window.location.href + "?viewStatus=" + $(this).val() ;
+			}else if(url.search("viewStatus") === -1 ){
+				url = window.location.href + "&viewStatus=" + $(this).val() ;
+			};
+		    var regEx = /([?&]viewStatus)=([^#&]*)/g;
+		    var newurl = url.replace(regEx, '$1=' + $(this).val());
+			window.location = newurl;
+    });
+	// Set status here
+	$("#viewOrder").change(function() {
+		    var url = window.location.href;
+			if((url.search("viewOrder") === -1) && (url.search("[?]") === -1)){
+				url = window.location.href + "?viewOrder=" + $(this).val() ;
+			}else if(url.search("viewOrder") === -1 ){
+				url = window.location.href + "&viewOrder=" + $(this).val() ;
+			};
+		    var regEx = /([?&]viewOrder)=([^#&]*)/g;
+		    var newurl = url.replace(regEx, '$1=' + $(this).val());
+			window.location = newurl;
+    });
+	// Set order here
+	$("#viewFeatured").change(function() {
+		    var url = window.location.href;
+			if((url.search("viewFeatured") === -1) && (url.search("[?]") === -1)){
+				url = window.location.href + "?viewFeatured=" + $(this).val() ;
+			}else if(url.search("viewFeatured") === -1 ){
+				url = window.location.href + "&viewFeatured=" + $(this).val() ;
+			};
+		    var regEx = /([?&]viewFeatured)=([^#&]*)/g;
+		    var newurl = url.replace(regEx, '$1=' + $(this).val());
+			window.location = newurl;
+    });
+	// Set viewFeatured here
+	$("#viewDomain").change(function() {
+		    var url = window.location.href;
+			if((url.search("viewDomain") === -1) && (url.search("[?]") === -1)){
+				url = window.location.href + "?viewDomain=" + $(this).val() ;
+			}else if(url.search("viewDomain") === -1 ){
+				url = window.location.href + "&viewDomain=" + $(this).val() ;
+			};
+		    var regEx = /([?&]viewDomain)=([^#&]*)/g;
+		    var newurl = url.replace(regEx, '$1=' + $(this).val());
+			window.location = newurl;
+    });
+	// Set viewFeatured here
+
+});
+</script>
 <!-- ************>>> This script is used to set Featured Property <<**************** -->
 
 <?php
@@ -620,21 +679,57 @@ echo '<script type="text/javascript">window.history.go(-1);</script>';
 
 <div class="content">
   <!-- ************Edit Menu Function ************************************************************************************ -->
-  <?php 
-$result = mysql_query("SELECT * FROM `$_SESSION[user_id]_real_project` ");
-?>
-  <table width="100%" border="0" align="center" cellspacing="5">
+  <table width="99%" border="0" align="center" cellspacing="5">
     <tr>
-      <td width="33%" align="right">&nbsp;</td>
-      <td width="33%" align="right">&nbsp;</td>
-      <td align="right"><select name="menutype" id="menutype">
-        <option value="0" >Property For</option>
-        <option value="1" >Sale</option>
-        <option value="2" >Rent</option>
-        <option value="3" >PG</option>
+      <td align="right">
+      <label for="viewOrder">Sort by Order </label>
+      <select name="viewOrder" id="viewOrder">
+        <option value="DESC" <?php if(($_GET['viewOrder']==1) || (!isset($_GET['viewOrder']))) echo ' SELECTED'  ?>>Descending</option>
+        <option value="ASC" <?php if(isset($_GET['viewOrder']) && ($_GET['viewOrder'])==0) { echo ' SELECTED' ; } ?>>Ascending</option>
+      </select>
+      </td>
+      <td align="right">
+      <label for="status">Select Status</label>
+      <select name="status" id="status">
+        <option value="1" <?php if(($_GET['viewStatus']==1) || (!isset($_GET['viewStatus']))) echo ' SELECTED'  ?>>Active</option>
+        <option value="0" <?php if(isset($_GET['viewStatus']) && ($_GET['viewStatus'])==0) { echo ' SELECTED' ; } ?>>Deleted</option>
+      </select>
+      </td>
+      <td align="right">Filter By Featured
+        <select name="viewFeatured" id="viewFeatured">
+        <option value=" " SELECTED >Select Featured</option>
+        <option value="1" <?php if(($_GET['viewFeatured'] == 1)) echo ' SELECTED'  ?>>Featured</option>
+        <option value="0" <?php if($_GET['viewFeatured'] == "0") { echo ' SELECTED' ; } ?>>Not Featured</option>
       </select></td>
+      <td align="right">
+      <?php $sql = mysql_query("SELECT * FROM user_sites WHERE user_id = '$_SESSION[user_id]' AND status = '1'") or die(mysql_error()); ?>
+      
+      Select Domain : 
+      <select name="viewDomain" id="viewDomain">
+        <option value="" selected="selected">All</option>
+      <?php while($row = mysql_fetch_array($sql)){ ?>
+        <option value="<?php echo $row['domain'] ?>"  <?php if(isset($_GET['viewDomain']) && ($_GET['viewDomain'])==$row['domain']) { echo ' SELECTED' ; } ?>><?php echo $row['domain'] ?></option>
+      <?php } ?>
+      </select>
+
+      </td>
     </tr>
   </table>
+
+  <?php 
+if(isset($_GET["viewStatus"])){	$viewStatus = " `status` = '".$_GET["viewStatus"]."'"; }else{ $viewStatus = " `status` = '1' "; }
+
+if(isset($_GET["viewFeatured"]) && $_GET["viewFeatured"] !== "" ){	$viewFeatured = " AND `featured` = '".$_GET["viewFeatured"]."'"; }else{ $viewFeatured = " "; }
+
+if(isset($_GET["viewDomain"])){	$viewDomain = " AND `domain` LIKE '%".$_GET["viewDomain"]."%'"; }else{ $viewDomain = " "; }
+
+echo $viewDomain ;
+
+if(isset($_GET["viewOrder"])){	$viewOrder = " ORDER BY `id` ".$_GET["viewOrder"]; }else{ $viewOrder = " ORDER BY `id` DESC "; }
+
+
+$result = mysql_query("SELECT * FROM `$_SESSION[user_id]_real_project` WHERE $viewStatus $viewFeatured $viewDomain $viewOrder ") or die(mysql_error());
+?>
   <table width="100%" border="1" align="center" cellpadding="5" cellspacing="0" class="border cellborder"  id="menutbl">
     <tr>
       <th width="8%" bgcolor="#99FFCC"> <p>Sr. No. </p></th>
@@ -645,10 +740,14 @@ $result = mysql_query("SELECT * FROM `$_SESSION[user_id]_real_project` ");
       <th width="19%" bgcolor="#99FFCC">Domains</th>
       <th width="19%" bgcolor="#99FFCC">Manage</th>
     </tr>
-    <?php		  	
+    <?php
+	if(mysql_num_rows($result)===0){ ?>
+    <tr>
+    	<td colspan="8" align="center"> <strong>***************** No Record found ****************</strong> </td>
+	<?php }else{
 	$i=1;
 while($row = mysql_fetch_array($result)){ ?>
-    <tr>
+    <tr class="top-border">
       <td width="8%" rowspan="4" align="right" valign="top" id="editmenu"><?php  echo $i++; ?></td>
       <td width="8%" rowspan="4" align="right" valign="top" id="editmenu">
       <a href="<?php echo $row['proj_img'];?>" class="modal">
@@ -656,7 +755,7 @@ while($row = mysql_fetch_array($result)){ ?>
       </a>
       </td>
       <td width="18%" align="left" valign="top">Project Title</td>
-      <td width="21%" align="left" valign="top"><?php echo $row['title'];?></td>
+      <td width="21%" align="left" valign="top"><strong>[<?php echo "Proj-ID: ".$row['id'];?>] - </strong><?php echo $row['title'];?></td>
       <td align="center" valign="middle">
         <?php if ($row['featured']==1){ echo '<font color="#009900"><strong>FEATURED</font></strong>';} else {echo '<font color="#FF0000">NOT FEATURED</font>';}?> 
         
@@ -693,8 +792,8 @@ while($row = mysql_fetch_array($result)){ ?>
       <td align="left" valign="top"> Address</td>
       <td align="left" valign="top"><?php echo $row['location'];?></td>
     </tr>
-    <?php }?>
-  </table>
+    <?php } }?>
+</table>
   <p>&nbsp;</p>
   <!-- ************ Update Menu Function ********************************************************************************** -->
 </div>

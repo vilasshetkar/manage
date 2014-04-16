@@ -49,7 +49,7 @@ tinyMCE.init({
         elements : "content,amenities,specifications,availability,contact,overview",
         theme : "advanced",
 		convert_urls: false,
-        plugins : "autolink,lists,spellchecker,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template",
+        plugins : "autolink,lists,spellchecker,pagebreak,style,layer,save,table,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template",
 
         // Theme options
         theme_advanced_buttons1 : "save,newdocument,|,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,styleselect,formatselect,fontselect,fontsizeselect",
@@ -584,7 +584,8 @@ if(isset($_FILES['prop_img'])){
 		$file_size =$_FILES['prop_img']['size'];
 		$file_tmp =$_FILES['prop_img']['tmp_name'];
 		$file_type=$_FILES['prop_img']['type'];	
-        if($file_size > 10097152){
+		echo $file_size;
+        if($file_size > 2097152){
 			$errors[]='File size must be less than 2 MB';
         }
 		if ((!$file_type == "image/jpeg") || (!$file_type == "image/png") || (!$file_type == "image/gif")){
@@ -616,11 +617,7 @@ if(isset($_FILES['prop_img'])){
 		$fileName = "http://".$_SERVER['HTTP_HOST']."/".$desired_dir."/".$file_name;
 
 	
-$posts = $_POST;
-foreach ($posts as $i => $post) {
-   if (empty($post[$i]))
-      $post[$i] = NULL;
-}
+
 $otherDomain = implode(',', $_POST['other_domain']);
 $sql="INSERT INTO `$_SESSION[user_id]_real_property` (`id`, `user_id`, `featured`, `prop_image`, `property_for`, `category`, `type`, `buildup_area`, `build_unit`, `land_area`, `land_unit`, `carpet_area`, `carpet_unit`, `price`, `bedrooms`, `bathrooms`, `country`, `state`, `city`, `address`, `location`, `title`, `society_name`, `prop_desc`, `cont_name`, `contact`, `email`, `cont_address`, `prop_age`, `furnished`, `transaction_type`, `prop_owner`, `floors`, `on_floor`, `parking`, `hospital`, `airport`, `railway`, `school`, `power`, `water`, `lift`, `res_parking`, `security`, `maintenance`, `gym`, `park`, `tarrace`, `swimming`, `quarters`, `club`, `facing`, meta_desc, meta_key, `other_domain`) VALUES (NULL, '$_POST[user_id]', '$_POST[featured]','$fileName', '$_POST[property_for]', '$_POST[category]', '$_POST[type]', '$_POST[build_area]', '$_POST[build_unit]', '$_POST[land_area]', '$_POST[land_unit]', '$_POST[carpet_area]', '$_POST[carpet_unit]', '$_POST[price]',  '$_POST[bedrooms]', '$_POST[bathrooms]', '$_POST[country]', '$_POST[state]', '$_POST[city]', '$_POST[address]', '$_POST[location]', '$_POST[title]', '$_POST[society_name]', '$_POST[prop_desc]', '$_POST[cont_name]', '$_POST[contact_no]', '$_POST[email]', '$_POST[cont_address]', '$_POST[prop_age]', '$_POST[furnished]', '$_POST[transaction_type]', '$_POST[prop_owner]', '$_POST[floors]', '$_POST[on_floor]', '$_POST[parking]', '$_POST[hospital]', '$_POST[airport]', '$_POST[railway]', '$_POST[school]', '$_POST[power]', '$_POST[water]', '$_POST[lift]', '$_POST[res_parking]', '$_POST[security]', '$_POST[maintenance]', '$_POST[gym]', '$_POST[park]', '$_POST[tarrace]', '$_POST[swimming]', '$_POST[quarters]', '$_POST[club]', '$_POST[facing]','$_POST[meta_desc]','$_POST[meta_key]','$otherDomain');";
 if (!mysql_query($sql))
@@ -1669,7 +1666,7 @@ echo "1 New Article Added Sucessfully!";
         <tr valign="top">
           <td>&nbsp;</td>
           <td>* Property Images</td>
-          <td><input name="prop_img[]" type="file" multiple="multiple" required="required" id="prop_img[]"/>
+          <td><input name="prop_img" type="file" required="required" id="prop_img"/>
             <input type="hidden" name="dir" value="../../upload/uploaded-files" />
             <input type="hidden" name="path" value="/admin/upload/uploaded-files" /></td>
         </tr>

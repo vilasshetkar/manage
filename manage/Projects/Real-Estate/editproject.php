@@ -20,7 +20,7 @@ tinyMCE.init({
         elements : "content,amenities,specifications,availability,contact,overview",
         theme : "advanced",
 		convert_urls: false,
-        plugins : "autolink,lists,spellchecker,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template",
+        plugins : "autolink,lists,spellchecker,pagebreak,style,layer,save,table,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template",
 
         // Theme options
         theme_advanced_buttons1 : "save,newdocument,|,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,styleselect,formatselect,fontselect,fontsizeselect",
@@ -549,7 +549,7 @@ if(isset($_FILES['proj_img'])){
 		$file_size =$_FILES['proj_img']['size'];
 		$file_tmp =$_FILES['proj_img']['tmp_name'];
 		$file_type=$_FILES['proj_img']['type'];
-        if($file_size > 10097152){
+        if($file_size > 2097152){
 			$errors[]='File size must be less than 2 MB';
         }
 		if ((!$file_type == "image/jpeg") || (!$file_type == "image/png") || (!$file_type == "image/gif")){
@@ -591,7 +591,7 @@ if(isset($_FILES['location_map'])){
 		$file_size =$_FILES['location_map']['size'];
 		$file_tmp =$_FILES['location_map']['tmp_name'];
 		$file_type=$_FILES['location_map']['type'];
-        if($file_size > 10097152){
+        if($file_size > 2097152){
 			$errors[]='File size must be less than 2 MB';
         }
 		if ((!$file_type == "image/jpeg") || (!$file_type == "image/png") || (!$file_type == "image/gif")){
@@ -633,7 +633,7 @@ if(isset($_FILES['layout_map'])){
 		$file_size =$_FILES['layout_map']['size'];
 		$file_tmp =$_FILES['layout_map']['tmp_name'];
 		$file_type=$_FILES['layout_map']['type'];
-        if($file_size > 10097152){
+        if($file_size > 2097152){
 			$errors[]='File size must be less than 2 MB';
         }
 		if ((!$file_type == "image/jpeg") || (!$file_type == "image/png") || (!$file_type == "image/gif")){
@@ -675,7 +675,7 @@ if(isset($_FILES['floor_plans'])){
 		$file_size =$_FILES['floor_plans']['size'];
 		$file_tmp =$_FILES['floor_plans']['tmp_name'];
 		$file_type=$_FILES['floor_plans']['type'];
-        if($file_size > 10097152){
+        if($file_size > 2097152){
 			$errors[]='File size must be less than 2 MB';
         }
 		if ((!$file_type == "image/jpeg") || (!$file_type == "image/png") || (!$file_type == "image/gif")){
