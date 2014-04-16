@@ -229,7 +229,7 @@ a:hover, a:active, a:focus { /* this group of selectors will give a keyboard nav
 	padding: 10px;
 	width: 98%;
 	font-size: 100%;
-	max-width: 1100px;
+	max-width: 1235px;
 	min-width: 780px;
 	margin-right: auto;
 	margin-left: auto;
@@ -239,6 +239,9 @@ a:hover, a:active, a:focus { /* this group of selectors will give a keyboard nav
 
 /* ~~ This grouped selector gives the lists in the .content area space ~~ */
 .content ul, .content ol {
+}
+th{
+	line-height:230%;
 }
 
 /* ~~ The navigation list styles (can be removed if you choose to use a premade flyout menu like Spry) ~~ */
@@ -526,6 +529,7 @@ $result = mysql_query("SELECT * FROM `user_sites` WHERE id=".$_SESSION['domain']
                 <li><a href="../../login/mysettings.php">Edit Profile/ Contacts</a></li>
                 <li><a href="../../select-site.php">View All Sites</a></li>
                 <li><a href="#">Request for New Site</a></li>
+                <li><a href="../../login/logout.php">Logout</a></li>
               </ul>
             </li>
           </ul>
@@ -537,33 +541,270 @@ $result = mysql_query("SELECT * FROM `user_sites` WHERE id=".$_SESSION['domain']
 		<div class="content">
 <!-- InstanceBeginEditable name="content" -->
 <?php 
-if(isset($_POST['insert'])=='addproject'){
+// Insert Project Image
+if(isset($_FILES['proj_img'])){
+    $errors= array();
+	//foreach($_FILES['proj_img']['tmp_name'] as $key => $tmp_name ){
+		$file_name = $_FILES['proj_img']['name'];
+		$file_size =$_FILES['proj_img']['size'];
+		$file_tmp =$_FILES['proj_img']['tmp_name'];
+		$file_type=$_FILES['proj_img']['type'];
+        if($file_size > 10097152){
+			$errors[]='File size must be less than 2 MB';
+        }
+		if ((!$file_type == "image/jpeg") || (!$file_type == "image/png") || (!$file_type == "image/gif")){
+			$errors[]='<strong>File type must be .gif, .png, .jpeg, .jpg only</strong>';			
+				};
+				
+
+       $desired_dir= $propImgFolder; 
+        if(empty($errors)==true){
+            if(is_dir($desired_dir)==false){
+                mkdir("$desired_dir", 0700);		// Create directory if it does not exist
+            }
+            if(file_exists($root."/".$desired_dir."/".$file_name)==false){
+                move_uploaded_file($file_tmp,$root."/".$desired_dir."/".$file_name);
+            }else{									// rename the file if another one exist
+                
+				$file_name=time()."-".$file_name;
+                 rename($file_tmp, $root."/".$desired_dir."/".$file_name) ;	
+				 chmod($root."/".$desired_dir."/".$file_name, 0644);			
+            }
+        }else{
+                foreach($errors as $er) { echo $er.'<br />'; };
+				
+        }
+	if(empty($errors)){
+		echo "Files uploaded Successfully ";
+		$proj_img = "http://".$_SERVER['HTTP_HOST']."/".$desired_dir."/".$file_name;
+	}else{
+	$proj_img = $_POST['oldProj_img'];
+}
+
+}
+
+// Insert Location Map
+if(isset($_FILES['location_map'])){
+    $errors= array();
+	//foreach($_FILES['proj_img']['tmp_name'] as $key => $tmp_name ){
+		$file_name = $_FILES['location_map']['name'];
+		$file_size =$_FILES['location_map']['size'];
+		$file_tmp =$_FILES['location_map']['tmp_name'];
+		$file_type=$_FILES['location_map']['type'];
+        if($file_size > 10097152){
+			$errors[]='File size must be less than 2 MB';
+        }
+		if ((!$file_type == "image/jpeg") || (!$file_type == "image/png") || (!$file_type == "image/gif")){
+			$errors[]='<strong>File type must be .gif, .png, .jpeg, .jpg only</strong>';			
+				};
+				
+
+       $desired_dir= $propImgFolder; 
+        if(empty($errors)==true){
+            if(is_dir($desired_dir)==false){
+                mkdir("$desired_dir", 0700);		// Create directory if it does not exist
+            }
+            if(file_exists($root."/".$desired_dir."/".$file_name)==false){
+                move_uploaded_file($file_tmp,$root."/".$desired_dir."/".$file_name);
+            }else{									// rename the file if another one exist
+                
+				$file_name=time()."-".$file_name;
+                 rename($file_tmp, $root."/".$desired_dir."/".$file_name) ;	
+				 chmod($root."/".$desired_dir."/".$file_name, 0644);			
+            }
+        }else{
+                foreach($errors as $er) { echo $er.'<br />'; };
+				
+        }
+	if(empty($errors)){
+		echo "Files uploaded Successfully ";
+		$location_map = "http://".$_SERVER['HTTP_HOST']."/".$desired_dir."/".$file_name;
+	}else{
+	$location_map = $_POST['oldlocation_map'];
+}
+}
+
+
+// Insert Location Map
+if(isset($_FILES['layout_map'])){
+    $errors= array();
+	//foreach($_FILES['proj_img']['tmp_name'] as $key => $tmp_name ){
+		$file_name = $_FILES['layout_map']['name'];
+		$file_size =$_FILES['layout_map']['size'];
+		$file_tmp =$_FILES['layout_map']['tmp_name'];
+		$file_type=$_FILES['layout_map']['type'];
+        if($file_size > 10097152){
+			$errors[]='File size must be less than 2 MB';
+        }
+		if ((!$file_type == "image/jpeg") || (!$file_type == "image/png") || (!$file_type == "image/gif")){
+			$errors[]='<strong>File type must be .gif, .png, .jpeg, .jpg only</strong>';			
+				};
+				
+
+       $desired_dir= $propImgFolder; 
+        if(empty($errors)==true){
+            if(is_dir($desired_dir)==false){
+                mkdir("$desired_dir", 0700);		// Create directory if it does not exist
+            }
+            if(file_exists($root."/".$desired_dir."/".$file_name)==false){
+                move_uploaded_file($file_tmp,$root."/".$desired_dir."/".$file_name);
+            }else{									// rename the file if another one exist
+                
+				$file_name=time()."-".$file_name;
+                 rename($file_tmp, $root."/".$desired_dir."/".$file_name) ;	
+				 chmod($root."/".$desired_dir."/".$file_name, 0644);			
+            }
+        }else{
+                foreach($errors as $er) { echo $er.'<br />'; };
+				
+        }
+	if(empty($errors)){
+		echo "Files uploaded Successfully ";
+		$layout_map = "http://".$_SERVER['HTTP_HOST']."/".$desired_dir."/".$file_name;
+	}else{
+	$layout_map = $_POST['oldlayout_map'];
+}
+}
+
+
+// Insert Location Map
+if(isset($_FILES['floor_plans'])){
+    $errors= array();
+	//foreach($_FILES['proj_img']['tmp_name'] as $key => $tmp_name ){
+		$file_name = $_FILES['floor_plans']['name'];
+		$file_size =$_FILES['floor_plans']['size'];
+		$file_tmp =$_FILES['floor_plans']['tmp_name'];
+		$file_type=$_FILES['floor_plans']['type'];
+        if($file_size > 10097152){
+			$errors[]='File size must be less than 2 MB';
+        }
+		if ((!$file_type == "image/jpeg") || (!$file_type == "image/png") || (!$file_type == "image/gif")){
+			$errors[]='<strong>File type must be .gif, .png, .jpeg, .jpg only</strong>';			
+				};
+				
+
+       $desired_dir= $propImgFolder; 
+        if(empty($errors)==true){
+            if(is_dir($desired_dir)==false){
+                mkdir("$desired_dir", 0700);		// Create directory if it does not exist
+            }
+            if(file_exists($root."/".$desired_dir."/".$file_name)==false){
+                move_uploaded_file($file_tmp,$root."/".$desired_dir."/".$file_name);
+            }else{									// rename the file if another one exist
+                
+				$file_name=time()."-".$file_name;
+                 rename($file_tmp, $root."/".$desired_dir."/".$file_name) ;	
+				 chmod($root."/".$desired_dir."/".$file_name, 0644);			
+            }
+        }else{
+                foreach($errors as $er) { echo $er.'<br />'; };
+				
+				
+        }
+	if(empty($errors)){
+		echo "Files uploaded Successfully<br /> ";
+		$floor_plans = "http://".$_SERVER['HTTP_HOST']."/".$desired_dir."/".$file_name;
+	}else{
+	$floor_plans = $_POST['oldfloor_plans'];
+}
+
+}
+// Update project Script
+if(isset($_POST['Update'])){
 $sql = mysql_query("UPDATE `$_SESSION[user_id]_real_project` SET
 `title`='$_POST[title]',
 `featured`='$_POST[featured]',
 `project_by`='$_POST[project_by]',
 `category`='$_POST[category]',
 `type`='$_POST[type]',
-`location`='$_POST[location]',
-`overview`='$_POST[overview]',
-`amenities`='$_POST[amenities]',
-`specifications`='$_POST[specifications]',
-`availability`='$_POST[availability]',
-`contact`='$_POST[contact]'
+`location`= '$_POST[location]',
+`overview`= '".str_replace("'","\'",$_POST['overview'])."',
+`proj_img` = '$proj_img',
+`amenities`= '".str_replace("'","\'",$_POST['amenities'])."',
+`specifications`= '".str_replace("'","\'",$_POST['specifications'])."',
+`location_map`='$location_map',
+`layout_map`='$layout_map',
+`floor_plans`='$floor_plans',
+`availability`= '".str_replace("'","\'",$_POST['availability'])."',
+`contact`= '".str_replace("'","\'",$_POST['contact'])."'
 WHERE id='$_POST[id]'");
 if(!$sql){
 	echo 'Error: '.mysql_error();
+	echo "Property not updated properly due to errors!";
 	}
 	else{
 		echo '1 Project Added Sucessfully!';
 		echo '<script type="text/javascript">window.history.go(-2);</script>';
 		
-		}}
+		}
+}
+
+
+// Copy Project Script
+if(isset($_POST['copy'])){
+	?>
+<?php
+//$otherDomain = implode(',', $_POST['other_domain']);
+
+$query = "INSERT INTO `$_SESSION[user_id]_real_project` (
+`title`,
+`project_by`,
+`featured`,
+`category`,
+`type`,
+`location`,
+`overview`,
+`proj_img`,
+`amenities`,
+`specifications`,
+`location_map`,
+`layout_map`,
+`floor_plans`,
+`availability`,
+`contact`,
+`domain`)
+
+VALUES (
+
+'$_POST[title]',
+'$_POST[project_by]',
+'$_POST[featured]',
+'$_POST[category]',
+'$_POST[type]',
+'$_POST[location]',
+'".str_replace("'","\'",$_POST['overview'])."',
+'$proj_img',
+'".str_replace("'","\'",$_POST['amenities'])."',
+'".str_replace("'","\'",$_POST['specifications'])."',
+'$location_map',
+'$layout_map',
+'$floor_plans',
+'".str_replace("'","\'",$_POST['availability'])."',
+'".str_replace("'","\'",$_POST['contact'])."',
+'$otherDomain')";
+
+$sql = mysql_query($query);
+if(!$sql){
+	echo 'Error: '.mysql_error();
+	echo "Property not updated properly due to errors!";
+	}
+	else{
+		echo '1 Project Added Sucessfully!';
+		$prop_id = mysql_insert_id();
+		}
+}
+
 ?>
 <!--Body Content from here-->
-<?php if (isset($_GET['proj_id'])) {
-	$proj_id=$_GET['proj_id']; ?>
-<?php $result= mysql_query("SELECT * FROM `$_SESSION[user_id]_real_project` WHERE id=$proj_id AND domain=$_SESSION[domain]");
+<?php if (isset($_GET['proj_id']) || isset($_GET['proj_copy'])) {
+	if(isset($_GET['proj_id'])){
+		$proj_id=$_GET['proj_id'];
+	}else {
+		$proj_id=$_GET['proj_copy'];
+	}
+	?>
+
+<?php $result= mysql_query("SELECT * FROM `$_SESSION[user_id]_real_project` WHERE id=$proj_id");
 while ($row= mysql_fetch_assoc($result)){  ?>
 <form action="" method="post" enctype="multipart/form-data" name="form1" id="form1">
   <table class="border">
@@ -628,6 +869,14 @@ No </td>
         <td id="text_landarea_id">* Overview</td>
         <td colspan="8"><textarea name="overview" cols="50" rows="4" id="overview" required="required"><?php echo $row['overview'];?></textarea></td>
       </tr>
+      <tr valign="top">
+        <td id="text_sub_cat_id3">&nbsp;</td>
+        <td id="text_sub_cat_id3">Project Image</td>
+        <td colspan="8"><input name="proj_img" type="file" id="proj_img"/>
+        <img src="<?php echo $row['proj_img'];?>" width="100" />
+        <input type="hidden" name="oldProj_img" value="<?php echo $row['proj_img'];?>" />
+        </td>
+      </tr>
       <tr valign="top" id="subcatdisplay2">
         <td id="text_sub_cat_id2">&nbsp;</td>
         <td id="text_sub_cat_id2">* Project By</td>
@@ -642,6 +891,27 @@ No </td>
         <td>&nbsp;</td>
         <td>* Specifications</td>
         <td colspan="8"><textarea name="specifications" cols="50" rows="10" id="specifications" required="required"><?php echo $row['specifications'];?></textarea></td>
+      </tr>
+      <tr valign="top">
+        <td>&nbsp;</td>
+        <td>Location Map</td>
+        <td colspan="8"><input name="location_map" type="file" id="location_map"/>
+          <img src="<?php echo $row['location_map'];?>" width="100" />
+          <input name="oldlocation_map" type="hidden" id="oldlocation_map" value="<?php echo $row['location_map'];?>" /></td>
+      </tr>
+      <tr valign="top">
+        <td>&nbsp;</td>
+        <td>layout_map</td>
+        <td colspan="8"><input name="layout_map" type="file" id="layout_map"/>
+          <img src="<?php echo $row['layout_map'];?>" width="100" />
+          <input name="oldlayout_map" type="hidden" id="oldlayout_map" value="<?php echo $row['layout_map'];?>" /></td>
+      </tr>
+      <tr valign="top">
+        <td>&nbsp;</td>
+        <td>floor_plans</td>
+        <td colspan="8"><input name="floor_plans" type="file" id="floor_plans"/>
+          <img src="<?php echo $row['floor_plans'];?>" width="100" />
+          <input name="oldfloor_plans" type="hidden" id="oldfloor_plans" value="<?php echo $row['floor_plans'];?>" /></td>
       </tr>
       <tr valign="top" id="bedroomshide2">
         <td>&nbsp;</td>
@@ -662,14 +932,37 @@ No </td>
     </tbody>
     <tbody>
       <tr valign="top"></tr>
+
+
+    <tr valign="top">
+      <td>&nbsp;</td>
+      <td colspan="2"> 
+        
+        <input name="user_id" type="hidden" id="user_id" value="1" />
+        <input name="id" type="hidden" id="id" value="<?php echo $row['id']; ?>" />
+        <?php if (isset($_GET['proj_copy'])) { ?>
+          <?php $result = mysql_query("SELECT * FROM `user_sites` WHERE user_id='$_SESSION[user_id]' and status='1'") or die(mysql_error()); ?>
+          Select Site to copy:
+          <select name="other_domain" id="other_domain" style="width:150px">
+            <?php while($row = mysql_fetch_array($result)){ ?>
+            <option value="<?php echo $row['domain']; ?>"><?php echo $row['domain'] ; ?></option>
+            <?php } ?>
+            </select>
+          <?php } ?>
+      </td>
+      <td width="29%">
+        <?php if (isset($_GET['proj_id'])) { ?>
+          <input name="Update" type="submit" id="Update" style="width:150px; height:30px" onclick="return validatePropertyStep2();" value="Update" />
+          <?php } else {?>
+          <input name="copy" type="submit" id="copy" style="width:150px; height:30px" onclick="return validatePropertyStep2();" value="Copy Project" />
+          <?php } ?>      </td>
+    </tr>
+
+
       <tr valign="top">
         <td>&nbsp;</td>
         <td> 
-          <input name="user_id" type="hidden" id="user_id" value="<?php echo $_SESSION['user_id']; ?>" />
-          <input name="domain" type="hidden" id="domain" value="<?php echo $_SESSION['domain']; ?>" />
-          <input name="insert" type="hidden" id="insert" value="addproject" />
-          <input name="id" type="hidden" id="id" value="<?php echo $row['id']; ?>" /></td>
-        <td colspan="8"><input type="submit" value="Submit" onclick="return validatePropertyStep2();" style="width:150px; height:30px" /></td>
+         </td>
       </tr>
     </tbody>
   </table>

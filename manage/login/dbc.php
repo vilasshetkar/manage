@@ -30,8 +30,9 @@ Note: If you use cpanel, the name will be like account_database
 $root = $_SERVER['DOCUMENT_ROOT'];
 global $root;
 $propImgFolder = "uploaded-files";
+$testDomain = "localhost";
 
-define ("DB_HOST", "169.254.182.25"); // set database host
+define ("DB_HOST", "localhost"); // set database host
 define ("DB_USER", "yogesh"); // set database user
 define ("DB_PASS","root"); // set database password
 define ("DB_NAME","prop"); // set database name

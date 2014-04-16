@@ -228,7 +228,7 @@ a:hover, a:active, a:focus { /* this group of selectors will give a keyboard nav
 	padding: 10px;
 	width: 98%;
 	font-size: 100%;
-	max-width: 1100px;
+	max-width: 1235px;
 	min-width: 780px;
 	margin-right: auto;
 	margin-left: auto;
@@ -238,6 +238,9 @@ a:hover, a:active, a:focus { /* this group of selectors will give a keyboard nav
 
 /* ~~ This grouped selector gives the lists in the .content area space ~~ */
 .content ul, .content ol {
+}
+th{
+	line-height:230%;
 }
 
 /* ~~ The navigation list styles (can be removed if you choose to use a premade flyout menu like Spry) ~~ */
@@ -526,6 +529,7 @@ $result = mysql_query("SELECT * FROM `user_sites` WHERE id=".$_SESSION['domain']
                 <li><a href="../login/mysettings.php">Edit Profile/ Contacts</a></li>
                 <li><a href="../select-site.php">View All Sites</a></li>
                 <li><a href="#">Request for New Site</a></li>
+                <li><a href="../login/logout.php">Logout</a></li>
               </ul>
             </li>
           </ul>

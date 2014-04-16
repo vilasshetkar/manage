@@ -1,6 +1,7 @@
 <?php 
 include '../../login/dbc.php';
 page_protect();
+include 'other-domain.php';
 ?>
     <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"><!-- InstanceBegin template="/Templates/Template.dwt.php" codeOutsideHTMLIsLocked="false" -->
@@ -255,7 +256,7 @@ a:hover, a:active, a:focus { /* this group of selectors will give a keyboard nav
 	padding: 10px;
 	width: 98%;
 	font-size: 100%;
-	max-width: 1100px;
+	max-width: 1235px;
 	min-width: 780px;
 	margin-right: auto;
 	margin-left: auto;
@@ -265,6 +266,9 @@ a:hover, a:active, a:focus { /* this group of selectors will give a keyboard nav
 
 /* ~~ This grouped selector gives the lists in the .content area space ~~ */
 .content ul, .content ol {
+}
+th{
+	line-height:230%;
 }
 
 /* ~~ The navigation list styles (can be removed if you choose to use a premade flyout menu like Spry) ~~ */
@@ -552,6 +556,7 @@ $result = mysql_query("SELECT * FROM `user_sites` WHERE id=".$_SESSION['domain']
                 <li><a href="../../login/mysettings.php">Edit Profile/ Contacts</a></li>
                 <li><a href="../../select-site.php">View All Sites</a></li>
                 <li><a href="#">Request for New Site</a></li>
+                <li><a href="../../login/logout.php">Logout</a></li>
               </ul>
             </li>
           </ul>
@@ -570,9 +575,20 @@ $result = mysql_query("SELECT * FROM `user_sites` WHERE id=".$_SESSION['domain']
 <script type="text/javascript">
 		$(document).ready(function() {
 			$(".view-property").fancybox({
-				'height'	: '100%',
 				'autoScale'	: true,
+				//'height'	: '100%',
+				//'width'		: '100%',
 				'type'		: 'iframe',
+				openEffect	: 'elastic',
+				openSpeed	: 400,
+				closeEffect : 'elastic',
+				closeSpeed  : 400,
+			});
+			});
+		$(document).ready(function() {
+			$(".modal").fancybox({
+				'autoScale'	: true,
+				'type'		: 'image',
 				openEffect	: 'elastic',
 				openSpeed	: 400,
 				closeEffect : 'elastic',
@@ -605,7 +621,7 @@ echo '<script type="text/javascript">window.history.go(-1);</script>';
 <div class="content">
   <!-- ************Edit Menu Function ************************************************************************************ -->
   <?php 
-$result = mysql_query("SELECT * FROM `$_SESSION[user_id]_real_project` WHERE domain=$_SESSION[domain]");
+$result = mysql_query("SELECT * FROM `$_SESSION[user_id]_real_project` ");
 ?>
   <table width="100%" border="0" align="center" cellspacing="5">
     <tr>
@@ -622,21 +638,25 @@ $result = mysql_query("SELECT * FROM `$_SESSION[user_id]_real_project` WHERE dom
   <table width="100%" border="1" align="center" cellpadding="5" cellspacing="0" class="border cellborder"  id="menutbl">
     <tr>
       <th width="8%" bgcolor="#99FFCC"> <p>Sr. No. </p></th>
+      <th width="8%" bgcolor="#99FFCC">Image</th>
       <th colspan="2" bgcolor="#99FFCC">Project Details</th>
-      <th width="10%" bgcolor="#99FFCC">Response</th>
       <th width="12%" bgcolor="#99FFCC">Featured</th>
       <th width="12%" bgcolor="#99FFCC">Status</th>
+      <th width="19%" bgcolor="#99FFCC">Domains</th>
       <th width="19%" bgcolor="#99FFCC">Manage</th>
     </tr>
     <?php		  	
 	$i=1;
 while($row = mysql_fetch_array($result)){ ?>
     <tr>
-      <td width="8%" rowspan="7" align="right" valign="top" id="editmenu"><?php  echo $i++; ?></td>
-      <td width="18%" align="left" valign="top">Project ID</td>
-      <td width="21%" align="left" valign="top"><?php echo 'REL'.$row['id'];?></td>
-      <td rowspan="7" align="center" valign="middle"><?php $res = mysql_query("SELECT * FROM $_SESSION[user_id]_real_response WHERE respo_for='REL-PROJ-$row[id]'");
-$rows = mysql_num_rows($res); echo $rows;?></td>
+      <td width="8%" rowspan="4" align="right" valign="top" id="editmenu"><?php  echo $i++; ?></td>
+      <td width="8%" rowspan="4" align="right" valign="top" id="editmenu">
+      <a href="<?php echo $row['proj_img'];?>" class="modal">
+      <img src="<?php echo $row['proj_img'];?>" width="100" />
+      </a>
+      </td>
+      <td width="18%" align="left" valign="top">Project Title</td>
+      <td width="21%" align="left" valign="top"><?php echo $row['title'];?></td>
       <td align="center" valign="middle">
         <?php if ($row['featured']==1){ echo '<font color="#009900"><strong>FEATURED</font></strong>';} else {echo '<font color="#FF0000">NOT FEATURED</font>';}?> 
         
@@ -645,7 +665,10 @@ $rows = mysql_num_rows($res); echo $rows;?></td>
       <?php if ($row['status']==1){ echo '<font color="#009900"><strong>Active</font></strong>';} else {echo '<font color="#FF0000">Deleted</font>';}?>
       
        </td>
-      <td width="19%" align="left" valign="middle"><a href="editproject.php?proj_id=<?php echo $row['id'];?>" id="mname">Edit</a></td>
+      <td width="19%" rowspan="4" align="left" valign="middle">
+      <?php domains($row['domain'],$row['id'],"project"); ?>
+      </td>
+      <td width="19%" rowspan="2" align="left" valign="middle"><a href="editproject.php?proj_id=<?php echo $row['id'];?>" id="mname">Edit</a></td>
       </tr>
     <tr>
       <td align="left" valign="top"> Category</td>
@@ -654,32 +677,21 @@ $rows = mysql_num_rows($res); echo $rows;?></td>
 	  <?php if ($row['featured']==1){ echo '<a class="featured" href="?id='.$row["id"].'&amp;featured=0" ><input type="button" value="Set Not Featured" /></a>';} 
 	  else if($row['featured']==0) {echo '<a class="featured" href="?id='.$row["id"].'&amp;featured=1" ><input type="button" value="Set Featured" /></a>';}?>
       <td align="center" valign="middle">
-      <?php if ($row['status']==1){ echo '<a class="featured" href="?id='.$row["id"].'&amp;status=0" ><input type="button" value="Delete Property" /></a>';} 
+        <?php if ($row['status']==1){ echo '<a class="featured" href="?id='.$row["id"].'&amp;status=0" ><input type="button" value="Delete Project" /></a>';} 
 	  else if($row['status']==0) {echo '<a class="featured" href="?id='.$row["id"].'&amp;status=1" ><input type="button" value="Make Active" /></a>';}?></td>
-      <td width="19%" align="left" valign="middle">
-      <a class="view-property" href="view-project-on-site.php?r_proj=<?php echo $row['id'];?>&amp;admin=1" >View Project</a></td>
       </tr>
     <tr>
       <td align="left" valign="top"> Type</td>
       <td align="left" valign="top"><?php echo $row['type'];?></td>
-      <td colspan="2" rowspan="5" align="center" valign="middle">
-      <a href="editproject.php?proj_copy=<?php echo $row['id'];?>" id="copy" title="Copy this project to other domains.">Copy Project</a>
+      <td colspan="2" rowspan="2" align="center" valign="middle">
+        <a href="editproject.php?proj_copy=<?php echo $row['id'];?>" id="copy" title="Copy this project to other domains.">Copy Project</a>
       </td>
-      <td width="19%" align="left" valign="middle"><a class="view-property" href="/manage/upload/rename.php?proj_proj_img=<?php echo $row['id']?>" title="Project Images"> Project Image</a></td>
+      <?php $testDomain ; ?>
+      <td width="19%" rowspan="2" align="left" valign="middle"><a class="view-property" href="http://<?php echo $testDomain;?>/index.php?view=project&layout=singleproject&tmpl=component&option=com_realestate&id=<?php echo $row['id'];?>" >View Project</a></td>
       </tr>
     <tr>
-      <td rowspan="4" align="left" valign="top"> Address</td>
-      <td rowspan="4" align="left" valign="top"><?php echo $row['location'];?></td>
-      <td width="19%" align="left" valign="middle"><a class="view-property" href="/manage/upload/rename.php?proj_logo=<?php echo $row['id']?>" title="Project Logo Images"> Logo Image</a></td>
-      </tr>
-    <tr>
-      <td valign="middle"><a class="view-property" href="/manage/upload/rename.php?proj_layout_map=<?php echo $row['id']?>" title="Project Layout Map Images"> Layout Map Image</a></td>
-    </tr>
-    <tr>
-      <td valign="middle"><a class="view-property" href="/manage/upload/rename.php?proj_location_map=<?php echo $row['id']?>" title="Project Location Map Images"> Location Map Image</a></td>
-    </tr>
-    <tr>
-      <td valign="middle"><a class="view-property" href="/manage/upload/rename.php?proj_floor_plans=<?php echo $row['id']?>" title="Project Floor Plans Images"> Floor Plans Image</a></td>
+      <td align="left" valign="top"> Address</td>
+      <td align="left" valign="top"><?php echo $row['location'];?></td>
     </tr>
     <?php }?>
   </table>

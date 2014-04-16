@@ -1,0 +1,61 @@
+@charset "utf-8";
+/* CSS Document */
+body{
+	background-color:#300;
+}
+.navbar{
+	
+	margin-bottom:0 !important;
+}
+h4.title {
+	font-family: Georgia, "Times New Roman", Times, serif;
+	font-size: 18px;
+	font-style: italic;
+	display: inline-block;
+	float: left;
+	width: auto;
+	padding-top: 30px;
+	font-weight: bold;
+}
+.container{
+	background-color: #FFF;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	border-radius: 10px;
+	box-shadow: 0px 0px 10px 0px #000;
+}
+.left.carousel-control {
+	width: 10px;
+}
+.right.carousel-control {
+	width: 10px;
+}
+.modal-footer {
+	background-color: #CCC;
+}
+.modal-footer.container {
+	margin-top:-10 !important;
+}
+.navbar{
+	margin-bottom:10px !important;
+}
+.tab-pane{
+	padding-top:15px !important;
+	padding-bottom:10px !important;
+	margin-bottom:20px !important;
+}
+#myCarousel{
+	display:none;
+}
+.home #myCarousel{
+	display:block;
+}
+.footer-menu{
+	display:block;
+	width:450px;
+	float:left;
+}
+.footer-menu li{
+	display:block;
+	float:left;
+}

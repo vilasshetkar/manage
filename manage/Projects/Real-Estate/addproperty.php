@@ -258,7 +258,7 @@ a:hover, a:active, a:focus { /* this group of selectors will give a keyboard nav
 	padding: 10px;
 	width: 98%;
 	font-size: 100%;
-	max-width: 1100px;
+	max-width: 1235px;
 	min-width: 780px;
 	margin-right: auto;
 	margin-left: auto;
@@ -268,6 +268,9 @@ a:hover, a:active, a:focus { /* this group of selectors will give a keyboard nav
 
 /* ~~ This grouped selector gives the lists in the .content area space ~~ */
 .content ul, .content ol {
+}
+th{
+	line-height:230%;
 }
 
 /* ~~ The navigation list styles (can be removed if you choose to use a premade flyout menu like Spry) ~~ */
@@ -558,6 +561,7 @@ $result = mysql_query("SELECT * FROM `user_sites` WHERE id=".$_SESSION['domain']
                 <li><a href="../../login/mysettings.php">Edit Profile/ Contacts</a></li>
                 <li><a href="../../select-site.php">View All Sites</a></li>
                 <li><a href="#">Request for New Site</a></li>
+                <li><a href="../../login/logout.php">Logout</a></li>
               </ul>
             </li>
           </ul>
@@ -575,11 +579,11 @@ if (isset($_POST['insert'])=="newproperty") {
 
 if(isset($_FILES['prop_img'])){
     $errors= array();
-	foreach($_FILES['prop_img']['tmp_name'] as $key => $tmp_name ){
-		$file_name = $_FILES['prop_img']['name'][$key];
-		$file_size =$_FILES['prop_img']['size'][$key];
-		$file_tmp =$_FILES['prop_img']['tmp_name'][$key];
-		$file_type=$_FILES['prop_img']['type'][$key];	
+	//foreach($_FILES['prop_img']['tmp_name'] as $key => $tmp_name ){
+		$file_name = $_FILES['prop_img']['name'];
+		$file_size =$_FILES['prop_img']['size'];
+		$file_tmp =$_FILES['prop_img']['tmp_name'];
+		$file_type=$_FILES['prop_img']['type'];	
         if($file_size > 10097152){
 			$errors[]='File size must be less than 2 MB';
         }
@@ -588,40 +592,45 @@ if(isset($_FILES['prop_img'])){
 				};
 				
 
-       $desired_dir= $root."/".$propImgFolder; 
+       $desired_dir= $propImgFolder; 
         if(empty($errors)==true){
             if(is_dir($desired_dir)==false){
                 mkdir("$desired_dir", 0700);		// Create directory if it does not exist
             }
-            if(file_exists("$desired_dir/".$file_name)==false){
-                move_uploaded_file($file_tmp,"$desired_dir/".$file_name);
+            if(file_exists($root."/".$desired_dir."/".$file_name)==false){
+                move_uploaded_file($file_tmp,$root."/".$desired_dir."/".$file_name);
             }else{									// rename the file if another one exist
                 
-				$new_file="$desired_dir/".time().$file_name;
-                 rename($file_tmp,$new_file) ;				
+				$file_name=time()."-".$file_name;
+                 rename($file_tmp, $root."/".$desired_dir."/".$file_name) ;	
+				 chmod($root."/".$desired_dir."/".$file_name, 0644);			
             }
         }else{
-                die($errors);
+                foreach($errors as $er) { echo $er.'<br />'; };
+				echo "Property not updated properly due to errors!";
+				
         }
-    }
+    
 	if(empty($errors)){
 		echo "Files uploaded Successfully ";
-	}
-}
+		$fileName = "http://".$_SERVER['HTTP_HOST']."/".$desired_dir."/".$file_name;
+
+	
 $posts = $_POST;
 foreach ($posts as $i => $post) {
    if (empty($post[$i]))
       $post[$i] = NULL;
 }
 $otherDomain = implode(',', $_POST['other_domain']);
-$sql="INSERT INTO `$_SESSION[user_id]_real_property` (`id`, `user_id`, `featured`, `prop_image`, `property_for`, `category`, `type`, `buildup_area`, `build_unit`, `land_area`, `land_unit`, `carpet_area`, `carpet_unit`, `price`, `bedrooms`, `bathrooms`, `country`, `state`, `city`, `address`, `location`, `title`, `society_name`, `prop_desc`, `cont_name`, `contact`, `email`, `cont_address`, `prop_age`, `furnished`, `transaction_type`, `prop_owner`, `floors`, `on_floor`, `parking`, `hospital`, `airport`, `railway`, `school`, `power`, `water`, `lift`, `res_parking`, `security`, `maintenance`, `gym`, `park`, `tarrace`, `swimming`, `quarters`, `club`, `facing`, meta_desc, meta_key, `other_domain`) VALUES (NULL, '$_POST[user_id]', '$_POST[featured]','http://$new_file', '$_POST[property_for]', '$_POST[category]', '$_POST[type]', '$_POST[build_area]', '$_POST[build_unit]', '$_POST[land_area]', '$_POST[land_unit]', '$_POST[carpet_area]', '$_POST[carpet_unit]', '$_POST[price]',  '$_POST[bedrooms]', '$_POST[bathrooms]', '$_POST[country]', '$_POST[state]', '$_POST[city]', '$_POST[address]', '$_POST[location]', '$_POST[title]', '$_POST[society_name]', '$_POST[prop_desc]', '$_POST[cont_name]', '$_POST[contact_no]', '$_POST[email]', '$_POST[cont_address]', '$_POST[prop_age]', '$_POST[furnished]', '$_POST[transaction_type]', '$_POST[prop_owner]', '$_POST[floors]', '$_POST[on_floor]', '$_POST[parking]', '$_POST[hospital]', '$_POST[airport]', '$_POST[railway]', '$_POST[school]', '$_POST[power]', '$_POST[water]', '$_POST[lift]', '$_POST[res_parking]', '$_POST[security]', '$_POST[maintenance]', '$_POST[gym]', '$_POST[park]', '$_POST[tarrace]', '$_POST[swimming]', '$_POST[quarters]', '$_POST[club]', '$_POST[facing]','$_POST[meta_desc]','$_POST[meta_key]','$otherDomain');";
+$sql="INSERT INTO `$_SESSION[user_id]_real_property` (`id`, `user_id`, `featured`, `prop_image`, `property_for`, `category`, `type`, `buildup_area`, `build_unit`, `land_area`, `land_unit`, `carpet_area`, `carpet_unit`, `price`, `bedrooms`, `bathrooms`, `country`, `state`, `city`, `address`, `location`, `title`, `society_name`, `prop_desc`, `cont_name`, `contact`, `email`, `cont_address`, `prop_age`, `furnished`, `transaction_type`, `prop_owner`, `floors`, `on_floor`, `parking`, `hospital`, `airport`, `railway`, `school`, `power`, `water`, `lift`, `res_parking`, `security`, `maintenance`, `gym`, `park`, `tarrace`, `swimming`, `quarters`, `club`, `facing`, meta_desc, meta_key, `other_domain`) VALUES (NULL, '$_POST[user_id]', '$_POST[featured]','$fileName', '$_POST[property_for]', '$_POST[category]', '$_POST[type]', '$_POST[build_area]', '$_POST[build_unit]', '$_POST[land_area]', '$_POST[land_unit]', '$_POST[carpet_area]', '$_POST[carpet_unit]', '$_POST[price]',  '$_POST[bedrooms]', '$_POST[bathrooms]', '$_POST[country]', '$_POST[state]', '$_POST[city]', '$_POST[address]', '$_POST[location]', '$_POST[title]', '$_POST[society_name]', '$_POST[prop_desc]', '$_POST[cont_name]', '$_POST[contact_no]', '$_POST[email]', '$_POST[cont_address]', '$_POST[prop_age]', '$_POST[furnished]', '$_POST[transaction_type]', '$_POST[prop_owner]', '$_POST[floors]', '$_POST[on_floor]', '$_POST[parking]', '$_POST[hospital]', '$_POST[airport]', '$_POST[railway]', '$_POST[school]', '$_POST[power]', '$_POST[water]', '$_POST[lift]', '$_POST[res_parking]', '$_POST[security]', '$_POST[maintenance]', '$_POST[gym]', '$_POST[park]', '$_POST[tarrace]', '$_POST[swimming]', '$_POST[quarters]', '$_POST[club]', '$_POST[facing]','$_POST[meta_desc]','$_POST[meta_key]','$otherDomain');";
 if (!mysql_query($sql))
   {
   die('Error: ' . mysql_error());
   }
 echo "1 New Article Added Sucessfully!";
 		$prop_id = mysql_insert_id();
-
+}
+}
 }
 ?>
 
@@ -633,7 +642,7 @@ echo "1 New Article Added Sucessfully!";
 
 <div class="content">
 
-  <form id="form1" name="form1" method="post" action="" enctype="multipart/form-data" >
+  <form action="" method="post" enctype="multipart/form-data" name="form1" class="form-horizontal" id="form1" >
     <table class="border">
       <tbody>
         <tr valign="top">
@@ -2546,7 +2555,8 @@ echo "1 New Article Added Sucessfully!";
         </tr>
         <tr valign="top">
           <td>&nbsp;</td>
-          <td colspan="2"><table width="98%" border="1" bordercolor="#CCCCCC">
+          <td colspan="2">
+          <table width="98%" border="1" bordercolor="#CCCCCC">
             <tbody>
 <?php  $sql = mysql_query("SELECT * FROM user_sites WHERE user_id = '$_SESSION[user_id]' AND status = '1'") or die(mysql_error()); ?>
 <?php		while($row = mysql_fetch_array($sql)){ ?>
