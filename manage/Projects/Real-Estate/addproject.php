@@ -715,6 +715,9 @@ $otherDomain = implode(',', $_POST['other_domain']);
 
 $sql = mysql_query("INSERT INTO `$_SESSION[user_id]_real_project` (
 `title`,
+`browsertitle`,
+`metakey`,
+`metadesc`,
 `project_by`,
 `featured`,
 `category`,
@@ -734,6 +737,9 @@ proj_img,
 VALUES (
 
 '$_POST[title]',
+'$_POST[browsertitle]',
+'$_POST[metakey]',
+'$_POST[metadesc]',
 '$_POST[project_by]',
 '$_POST[featured]',
 '$_POST[category]',
@@ -771,12 +777,27 @@ if(!$sql){
   <table class="border">
     <tbody>
       <tr valign="top">
-        <td colspan="10"><h1>Basic info:</h1></td>
+        <td colspan="10"><h1>Project info:</h1></td>
       </tr>
       <tr valign="top">
         <td width="1%">&nbsp;</td>
         <td width="21%">* Project Title</td>
         <td width="66" colspan="8"><textarea required="required" name="title" cols="70" id="title"></textarea></td>
+      </tr>
+      <tr valign="top">
+        <td>&nbsp;</td>
+        <td>* Browser Title</td>
+        <td colspan="8"><textarea name="browsertitle" cols="70" id="browsertitle"><?php echo $row['title']; ?></textarea></td>
+      </tr>
+      <tr valign="top">
+        <td id="text_landarea_id2">&nbsp;</td>
+        <td id="text_landarea_id2">Meta Keywords</td>
+        <td colspan="8"><textarea name="metakey" cols="70" rows="4" id="metakey" required="required"></textarea></td>
+      </tr>
+      <tr valign="top">
+        <td id="text_landarea_id3">&nbsp;</td>
+        <td id="text_landarea_id3">Meta Description</td>
+        <td colspan="8"><textarea name="metadesc" cols="70" rows="4" id="overview3" required="required"></textarea></td>
       </tr>
       <tr valign="top">
         <td id="text_cat_id_id2">&nbsp;</td>

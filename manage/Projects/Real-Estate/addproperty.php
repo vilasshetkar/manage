@@ -643,7 +643,7 @@ echo "1 New Article Added Sucessfully!";
     <table class="border">
       <tbody>
         <tr valign="top">
-          <td colspan="3"><h1>Basic info:</h1></td>
+          <td colspan="3"><h1>Property info:</h1></td>
           </tr>
         <tr valign="top">
           <td width="4%">&nbsp;</td>
@@ -1749,13 +1749,21 @@ echo "1 New Article Added Sucessfully!";
         </tr>
         <tr valign="top">
           <td>&nbsp;</td>
-          <td>* Property Title <br />
-            ( Display in your website )</td>
+          <td>* Property Title</td>
           <td><span id="sprytextarea2">
           <textarea name="title" cols="70" id="title"></textarea>
           <br />
           Remaining Chrs.: <span id="countsprytextarea2">&nbsp;</span><span class="textareaRequiredMsg">A value is required.</span><span class="textareaMaxCharsMsg">Exceeded maximum number of characters.</span></span></td>
           </tr>
+        <tr valign="top">
+          <td>&nbsp;</td>
+          <td>* Browser Title <br />
+            ( Display in your website )</td>
+          <td><span id="sprytextarea7">
+            <textarea name="browsertitle" cols="70" id="browsertitle"></textarea>
+            <br />
+            Remaining Chrs.: <span id="countsprytextarea7">&nbsp;</span><span class="textareaRequiredMsg">A value is required.</span><span class="textareaMaxCharsMsg">Exceeded maximum number of characters.</span></span></td>
+        </tr>
         <tr valign="top">
           <td>&nbsp;</td>
           <td>*  Meta Description</td>
@@ -2597,6 +2605,7 @@ var sprytextfield7 = new Spry.Widget.ValidationTextField("sprytextfield7", "none
 var sprytextfield8 = new Spry.Widget.ValidationTextField("sprytextfield8", "phone_number", {format:"phone_custom", pattern:"0000000000", validateOn:["blur"], hint:"10 Digit Mobile no."});
 var sprytextfield9 = new Spry.Widget.ValidationTextField("sprytextfield9", "email", {validateOn:["blur"]});
 var sprytextarea6 = new Spry.Widget.ValidationTextarea("sprytextarea6", {maxChars:255, counterId:"countsprytextarea6", counterType:"chars_remaining"});
+var sprytextarea7 = new Spry.Widget.ValidationTextarea("sprytextarea7", {maxChars:255, counterId:"countsprytextarea7", counterType:"chars_remaining", validateOn:["blur"]});
 </script>
 <!-- InstanceEndEditable -->
         </div>

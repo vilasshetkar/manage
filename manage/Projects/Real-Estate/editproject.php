@@ -713,6 +713,9 @@ if(isset($_FILES['floor_plans'])){
 if(isset($_POST['Update'])){
 $sql = mysql_query("UPDATE `$_SESSION[user_id]_real_project` SET
 `title`='$_POST[title]',
+`browsertitle`='$_POST[browsertitle]',
+`metakey`='$_POST[metakey]',
+`metadesc`='$_POST[metadesc]',
 `featured`='$_POST[featured]',
 `project_by`='$_POST[project_by]',
 `category`='$_POST[category]',
@@ -748,6 +751,9 @@ if(isset($_POST['copy'])){
 
 $query = "INSERT INTO `$_SESSION[user_id]_real_project` (
 `title`,
+`browsertitle`,
+`metakey`,
+`metadesc`,
 `project_by`,
 `featured`,
 `category`,
@@ -767,6 +773,9 @@ $query = "INSERT INTO `$_SESSION[user_id]_real_project` (
 VALUES (
 
 '$_POST[title]',
+'$_POST[browsertitle]',
+'$_POST[metakey]',
+'$_POST[metadesc]',
 '$_POST[project_by]',
 '$_POST[featured]',
 '$_POST[category]',
@@ -810,12 +819,27 @@ while ($row= mysql_fetch_assoc($result)){  ?>
   <table class="border">
     <tbody>
       <tr valign="top">
-        <td colspan="10"><h1>Basic info:</h1></td>
+        <td colspan="10"><h1>Project info:</h1></td>
       </tr>
       <tr valign="top">
         <td width="3%">&nbsp;</td>
         <td width="19%">* Project Title</td>
         <td width="78%" colspan="8"><textarea required="required" name="title" cols="70" id="title"><?php echo $row['title']; ?></textarea></td>
+      </tr>
+      <tr valign="top">
+        <td>&nbsp;</td>
+        <td>* Browser Title</td>
+        <td colspan="8"><textarea name="browsertitle" cols="70" id="browsertitle"><?php echo $row['title']; ?></textarea></td>
+      </tr>
+      <tr valign="top">
+        <td id="text_landarea_id2">&nbsp;</td>
+        <td id="text_landarea_id2">Meta Keywords</td>
+        <td colspan="8"><textarea name="metakey" cols="70" rows="4" id="metakey"><?php echo $row['metakey']; ?></textarea></td>
+      </tr>
+      <tr valign="top">
+        <td id="text_landarea_id3">&nbsp;</td>
+        <td id="text_landarea_id3">Meta Description</td>
+        <td colspan="8"><textarea name="metadesc" cols="70" rows="4" id="metadesc" required="required"><?php echo $row['metadesc']; ?></textarea></td>
       </tr>
       <tr valign="top">
         <td id="text_cat_id_id2">&nbsp;</td>
