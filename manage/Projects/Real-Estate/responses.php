@@ -632,33 +632,32 @@ if($ml){
 
 <div class="content">
 <!-- ************ View Messages Function ************************************************************************************ -->
-  <?php 
-$condition='domain='.$_SESSION['domain'].' AND respo_for="web"';
+<?php 
+$condition='respo_for="web"';
 if(isset($_GET['respo_for'])){
 	if(isset($_GET['status'])){
-		$condition='domain='.$_SESSION['domain'].' AND respo_for="'.$_GET['respo_for'].'" AND status="'.$_GET['status'].'"';
+		$condition=' respo_for="'.$_GET['respo_for'].'" AND status="'.$_GET['status'].'"';
 	}
 	else {
-			$condition='domain='.$_SESSION['domain'].' AND respo_for="'.$_GET['respo_for'].'"';
+			$condition=' respo_for="'.$_GET['respo_for'].'" AND status !="Delete"';
 
 		}
 	}
-$result = mysql_query("SELECT * FROM `$_SESSION[user_id]_real_response` WHERE ".$condition);
+$result = mysql_query("SELECT * FROM `$_SESSION[user_id]_real_response` WHERE ".$condition." ORDER BY `id` DESC");
 if(!$result){
 	echo 'Error: '.mysql_error();
 	}
 ?>
   <table border="0" cellspacing="5" class="cellborder">
     <tr>
+      <td align="right"><a href="?respo_for=web" class="nav">Web Response</a></td>
       <td align="right"><a href="?respo_for=property" class="nav">Property Response</a></td>
       <td align="right"><a href="?respo_for=project" class="nav">Project Response</a></td>
-      <td align="right"><a href="?respo_for=web" class="nav">Web Response</a></td>
-      <td align="right"><a href="?respo_for=refer" class="nav">Refer Friends</a></td>
       </tr>
     </table>
   <table width="98%" border="0" align="center" cellpadding="0" cellspacing="0" class="border"  id="menutbl">
     <tr>
-  <?php if (isset($_GET['respo_for'])=='property') { ?>
+  <?php if (isset($_GET['respo_for'])) { ?>
   <?php	if ($_GET['respo_for']=='property') { ?>
       <td colspan="6"><table border="0" cellpadding="0" cellspacing="0">
         <tr>
@@ -677,17 +676,6 @@ if(!$result){
             <td><a href="?respo_for=project&amp;status=New" class="nav">New</a></td>
             <td><a href="?respo_for=project&amp;status=Read" class="nav">Read</a></td>
             <td><a href="?respo_for=project&amp;status=Delete" class="nav">Delete</a></td>
-            </tr>
-          </table></td>
-  <?php }?>
-  <?php	if ($_GET['respo_for']=='refer') { ?>
-      <td colspan="6">
-        <table border="0" cellspacing="0" cellpadding="0">
-          <tr>
-            <td><a href="?respo_for=refer" class="nav">All</a></td>
-            <td><a href="?respo_for=refer&amp;status=New" class="nav">New</a></td>
-            <td><a href="?respo_for=refer&amp;status=Read" class="nav">Read</a></td>
-            <td><a href="?respo_for=refer&amp;status=Delete" class="nav">Delete</a></td>
             </tr>
           </table></td>
   <?php }?>
@@ -728,14 +716,14 @@ if(!$result){
       </tr>
   <?php		  	
 
-$result = mysql_query("SELECT * FROM `$_SESSION[user_id]_real_response` WHERE ".$condition);
+$result = mysql_query("SELECT * FROM `$_SESSION[user_id]_real_response` WHERE ".$condition." ORDER BY `id` DESC");
 $i=1;
 
 while($row = mysql_fetch_array($result)){ 
 ?>
     <tr>
       <td width="8%" align="right" valign="top" id="editmenu"><?php  echo $i++; ?></td>
-      <td align="left" valign="top"><?php echo $row['first_name'];?> <?php echo $row['last_name'];?></td>
+      <td align="left" valign="top"><a href="?view_mail=<?php echo $row['id'];?><?php if(($row['status']=='New') || $row['status']==''){echo '&amp;mk_read='.$row['id'];} ?>"> <?php echo $row['first_name'];?> <?php echo $row['last_name'];?></a></td>
       <td align="left" valign="top">
         <a href="?view_mail=<?php echo $row['id'];?><?php if(($row['status']=='New') || $row['status']==''){echo '&amp;mk_read='.$row['id'];} ?>"><?php echo $row['subject'];?></a>
         </td>
@@ -769,7 +757,7 @@ if(!$view_mail){
   <?php		  	
 while($row = mysql_fetch_array($view_mail)){ ?>
     <tr>
-      <td><a href="javascript: void(0);" class="nav" onclick="javascript: history.go(-2)">&lt;-Back</a></td>
+      <td><a href="javascript: void(0);" class="nav" onclick="javascript: history.go(-1)">&lt;-Back</a></td>
       <td colspan="2"><a href="?view_mail=<?php echo $row['id'];?><?php if($row['status']=='New'){echo '&amp;mk_read='.$row['id'];} ?>"><?php echo $row['subject'];?></a></td>
       </tr>
     <tr>
@@ -779,20 +767,20 @@ while($row = mysql_fetch_array($view_mail)){ ?>
       </tr>
     <tr>
       <td>&nbsp;</td>
-      <td><?php echo $row['message'];?></td>
+      <td><div style="min-height:200px;"><?php echo $row['message'];?></div></td>
       <td>&nbsp;</td>
       </tr>
     <tr>
       <td width="8%" valign="top">Reply:</td>
       <td width="65%"><form id="form1" name="form1" method="post" action="">
         <span id="sprytextarea1">
-        <textarea name="reply_msg" id="reply_msg" cols="60" rows="5"><?php echo $row['reply_msg'];?></textarea><br />
+        <textarea name="reply_msg" id="reply_msg" cols="60" rows="5" <?php if($row['reply_msg']!="") echo 'disabled="disabled"';?> ><?php echo $row['reply_msg'];?></textarea><br />
         Remaining Chars.: <span id="countsprytextarea1">&nbsp;</span><span class="textareaMinCharsMsg">Minimum number of characters not met.</span><span class="textareaMaxCharsMsg">Exceeded maximum number of characters.</span><span class="textareaRequiredMsg">A value is required.</span></span>
         <input type="hidden" name="msg_id" id="msg_id" value="<?php echo $row['id'];?>"/>
         <input type="hidden" name="from" id="from" value="<?php echo $_SESSION['user_email'];?>"/>
         <input type="hidden" name="to" id="to" value="<?php echo $row['email'];?>"/>
         <input type="hidden" name="subject" id="subject" value="<?php echo $row['email'];?>"/>
-        <input type="submit" name="reply" id="reply" value="Send Reply" />
+        <input type="submit" name="reply" id="reply" value="Send Reply"  <?php if($row['reply_msg']!="") echo 'disabled="disabled"';?>  />
       </form></td>
       <td valign="top">&nbsp;</td>
       </tr>
