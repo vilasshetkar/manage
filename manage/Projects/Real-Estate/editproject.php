@@ -829,7 +829,7 @@ while ($row= mysql_fetch_assoc($result)){  ?>
       <tr valign="top">
         <td>&nbsp;</td>
         <td>* Browser Title</td>
-        <td colspan="8"><textarea name="browsertitle" cols="70" id="browsertitle"><?php echo $row['title']; ?></textarea></td>
+        <td colspan="8"><textarea name="browsertitle" cols="70" id="browsertitle"><?php echo $row['browsertitle']; ?></textarea></td>
       </tr>
       <tr valign="top">
         <td id="text_landarea_id2">&nbsp;</td>
