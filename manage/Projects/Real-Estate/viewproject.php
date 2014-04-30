@@ -570,7 +570,10 @@ $result = mysql_query("SELECT * FROM `user_sites` WHERE id=".$_SESSION['domain']
 <!-- ************>>> This script is used for View property or project in fancy box <<**************** -->
 <style>
 .cellborder tr.top-border td {
-	border-top:2px solid #666 !important;
+	border-top:3px solid #666 !important;
+}
+.cellborder tbody tr.top-border:first-child td {
+	border-top:none !important;
 }
 </style>
 
@@ -697,7 +700,7 @@ echo '<script type="text/javascript">window.history.go(-1);</script>';
       </td>
       <td align="right">Filter By Featured
         <select name="viewFeatured" id="viewFeatured">
-        <option value=" " SELECTED >Select Featured</option>
+        <option value="" SELECTED >Select Featured</option>
         <option value="1" <?php if(($_GET['viewFeatured'] == 1)) echo ' SELECTED'  ?>>Featured</option>
         <option value="0" <?php if($_GET['viewFeatured'] == "0") { echo ' SELECTED' ; } ?>>Not Featured</option>
       </select></td>
@@ -723,14 +726,13 @@ if(isset($_GET["viewFeatured"]) && $_GET["viewFeatured"] !== "" ){	$viewFeatured
 
 if(isset($_GET["viewDomain"])){	$viewDomain = " AND `domain` LIKE '%".$_GET["viewDomain"]."%'"; }else{ $viewDomain = " "; }
 
-echo $viewDomain ;
-
 if(isset($_GET["viewOrder"])){	$viewOrder = " ORDER BY `id` ".$_GET["viewOrder"]; }else{ $viewOrder = " ORDER BY `id` DESC "; }
 
 
 $result = mysql_query("SELECT * FROM `$_SESSION[user_id]_real_project` WHERE $viewStatus $viewFeatured $viewDomain $viewOrder ") or die(mysql_error());
 ?>
   <table width="100%" border="1" align="center" cellpadding="5" cellspacing="0" class="border cellborder"  id="menutbl">
+  <thead>
     <tr>
       <th width="8%" bgcolor="#99FFCC"> <p>Sr. No. </p></th>
       <th width="8%" bgcolor="#99FFCC">Image</th>
@@ -740,6 +742,8 @@ $result = mysql_query("SELECT * FROM `$_SESSION[user_id]_real_project` WHERE $vi
       <th width="19%" bgcolor="#99FFCC">Domains</th>
       <th width="19%" bgcolor="#99FFCC">Manage</th>
     </tr>
+    </thead>
+    <tbody>
     <?php
 	if(mysql_num_rows($result)===0){ ?>
     <tr>
@@ -754,7 +758,7 @@ while($row = mysql_fetch_array($result)){ ?>
       <img src="<?php echo $row['proj_img'];?>" width="100" />
       </a>
       </td>
-      <td width="18%" align="left" valign="top">Project Title</td>
+      <td width="12%" align="left" valign="top">Project Title</td>
       <td width="21%" align="left" valign="top"><strong>[<?php echo "Proj-ID: ".$row['id'];?>] - </strong><?php echo $row['title'];?></td>
       <td align="center" valign="middle">
         <?php if ($row['featured']==1){ echo '<font color="#009900"><strong>FEATURED</font></strong>';} else {echo '<font color="#FF0000">NOT FEATURED</font>';}?> 
@@ -793,6 +797,7 @@ while($row = mysql_fetch_array($result)){ ?>
       <td align="left" valign="top"><?php echo $row['location'];?></td>
     </tr>
     <?php } }?>
+    </tbody>
 </table>
   <p>&nbsp;</p>
   <!-- ************ Update Menu Function ********************************************************************************** -->

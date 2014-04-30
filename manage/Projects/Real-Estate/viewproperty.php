@@ -571,8 +571,12 @@ $result = mysql_query("SELECT * FROM `user_sites` WHERE id=".$_SESSION['domain']
 <!-- ************>>> This script is used for View property or project in fancy box <<**************** -->
 <style>
 .cellborder tr.top-border td {
-	border-top:2px solid #666 !important;
+	border-top:3px solid #666 !important;
 }
+.cellborder tbody tr.top-border:first-child td {
+	border-top:none !important;
+}
+
 </style>
 
 <script type="text/javascript" src="../../_script/jquery-1.6.2.min.js"></script>
@@ -730,6 +734,7 @@ if(isset($_GET["viewOrder"])){	$viewOrder = " ORDER BY `id` ".$_GET["viewOrder"]
 $result = mysql_query("SELECT * FROM `$_SESSION[user_id]_real_property` WHERE $viewStatus $viewFeatured $viewDomain $viewOrder") or die(mysql_error()) ;
 ?>
   <table width="100%" border="1" align="center" cellpadding="5" cellspacing="0" class="border cellborder"  id="menutbl">
+  <thead>
     <tr>
       <th width="5%" bgcolor="#99FFCC"> <p>Sr. No. </p></th>
       <th bgcolor="#99FFCC">Image</th>
@@ -739,6 +744,8 @@ $result = mysql_query("SELECT * FROM `$_SESSION[user_id]_real_property` WHERE $v
       <th width="17%" bgcolor="#99FFCC">Other Domains</th>
       <th width="15%" bgcolor="#99FFCC">Manage</th>
     </tr>
+    </thead>
+    <tbody>
     <?php
 	if(mysql_num_rows($result)===0){ ?>
     <tr>
@@ -787,6 +794,7 @@ while($row = mysql_fetch_array($result)){ ?>
       <td align="left" valign="top"><?php echo $row['address'];?></td>
       </tr>
     <?php } }?>
+    </tbody>
   </table>
   <p>&nbsp;</p>
   <!-- ************ Update Menu Function ********************************************************************************** -->

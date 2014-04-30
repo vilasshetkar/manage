@@ -8,3 +8,7 @@ ALTER TABLE  `2_real_property` ADD  `browsertitle` TEXT NOT NULL AFTER  `title`
 #2_real_response updated - domain[text], status[defaultvalue], reply[defaultvalue], phone[int(55)]
 
 ALTER TABLE `2_real_response` CHANGE `phone` `phone` INT(55) NOT NULL, CHANGE `reply` `reply` ENUM('Yes','No') CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT 'No', CHANGE `domain` `domain` TEXT NOT NULL;
+
+
+#data type of domain field has changed - 30-Apr-2014 in Cybage
+ALTER TABLE `2_real_project` CHANGE `domain` `domain` TEXT NOT NULL;

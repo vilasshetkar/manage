@@ -1682,7 +1682,7 @@ echo "1 New Article Added Sucessfully!";
           <td id="text_prop_state_id_id">&nbsp;</td>
           <td id="text_prop_state_id_id">* State</td>
           <td><span id="spryselect4">
-            <select name="state" id="state" onchange="get_prop_state_city(this.value,'http://www.realestateindia.com','/ajax/prop_state_city_drop_down.php?id=show_city_subcity&amp;&amp;onblur_func=Y', 'city_disp')" onblur="validate_form_field(this.value,'prop_state_id')">
+            <select name="state" id="state" >
               <option value="" selected="selected">Select State</option>
               <option value="Andaman &amp; Nicobar">Andaman &amp; Nicobar</option>
               <option value="Andhra Pradesh">Andhra Pradesh</option>
@@ -1766,7 +1766,7 @@ echo "1 New Article Added Sucessfully!";
         </tr>
         <tr valign="top">
           <td>&nbsp;</td>
-          <td>*  Meta Description</td>
+          <td>* Meta Description</td>
           <td><span id="sprytextarea3">
           <textarea name="meta_desc" cols="70" id="meta_desc"></textarea>
           <br />
@@ -1782,11 +1782,19 @@ echo "1 New Article Added Sucessfully!";
           </tr>
         <tr valign="top">
           <td>&nbsp;</td>
-          <td>* Society Name <br />
-            ( 50 characters Only )</td>
-          <td><span id="sprytextfield6">
-          <input name="society_name" type="text" id="society_name" value="" size="70" maxlength="50" />
-          <span class="textfieldRequiredMsg">A value is required.</span><span class="textfieldMaxCharsMsg">Exceeded maximum number of characters.</span></span></td>
+          <td>Project Name</td>
+          <td>
+<?php 
+	  $result = mysql_query("SELECT * FROM `$_SESSION[user_id]_real_project` WHERE `status` = '1' GROUP BY `title`") or die(mysql_error()) ;
+		  
+?>
+            <select name="society_name" id="society_name" >
+              <option value="" selected="selected">Select Project Name</option>
+		<?php while($row = mysql_fetch_array($result)){ ?>
+			  <option value="<?php echo $row['title']; ?>" ><?php echo $row['title']; ?></option>
+			  
+		<?php  } ?>            
+            </select>
           </tr>
         <tr valign="top">
           <td id="text_prop_desc_id">&nbsp;</td>

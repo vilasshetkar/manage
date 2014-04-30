@@ -1763,7 +1763,16 @@ No(s).</td>
         <td>Society Name <br />
           ( 50 characters Only )</td>
         <td colspan="2">
-            <input name="society_name" type="text" id="society_name" value="<?php echo $row['society_name'];?>" size="70" maxlength="50" />
+<?php 
+	  $projResult = mysql_query("SELECT * FROM `$_SESSION[user_id]_real_project` WHERE `status` = '1' GROUP BY `title`") or die(mysql_error()) ;
+		  
+?>
+            <select name="society_name" id="society_name" >
+		<?php while($projrow = mysql_fetch_array($projResult)){ ?>
+			  <option value="<?php echo $projrow['title']; ?>" <?php if($projrow['title'] == $row['society_name']) echo "SELECTED" ; ?> ><?php echo $projrow['title']; ?></option>
+			  
+		<?php  } ?>            
+            </select>
       </td>
       </tr>
       <tr valign="top">

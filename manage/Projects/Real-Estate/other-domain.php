@@ -4,21 +4,24 @@ function domains($other_domains,$id, $proType){
 		$sql = mysql_query("SELECT * FROM user_sites WHERE user_id = '$_SESSION[user_id]' AND status = '1'") or die(mysql_error()); ?>
 <form method="post" action="other-domain.php" enctype="multipart/form-data" id="form<?php echo $id ?>">
 <?php		while($row = mysql_fetch_array($sql)){
-			
-?>		<input type="checkbox" name="other_domain[]" value="<?php echo $row['domain'] ?>" <?php foreach($domains as $domain) { if($row['domain']==$domain) { echo "CHECKED"; } } ?> /> <?php echo $row['domain'] ?><br>
+	
+?>		
+
+<label>
+<input type="checkbox" name="other_domain[]" value="<?php echo $row['domain'] ?>" <?php foreach($domains as $domain) { if($row['domain']==$domain) { echo "CHECKED"; } } ?> /> <?php echo $row['domain'] ?></label><br>
 
 <?php } ?>
 <input type="hidden" name="<?php echo $proType ?>" value="<?php echo $id ?>" />
 </form>
 <script type="text/javascript">
-$('#form<?php echo $id ?> input:checkbox').click(function(){
+$('#form<?php echo $id ?> input:checkbox, #form<?php echo $id ?> label').click(function(){
     $.ajax({
         url: 'other-domain.php',
         type: 'post',
         dataType: 'html',
         data: $(this).parent('form').serialize(),
         success: function(data) {
-                   alert(data);
+                   //alert(data);
 				   },
 		error: function(data){
 			alert(data);
