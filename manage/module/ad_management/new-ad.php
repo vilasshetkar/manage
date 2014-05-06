@@ -24,6 +24,8 @@ tinyMCE.init({
         theme : "advanced",
 		convert_urls: false,
         plugins : "autolink,lists,spellchecker,pagebreak,style,layer,save,table,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template",
+		
+		file_browser_callback : "filebrowser",
 
         // Theme options
         theme_advanced_buttons1 : "save,newdocument,|,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,styleselect,formatselect,fontselect,fontsizeselect",
@@ -43,10 +45,10 @@ tinyMCE.init({
         content_css : "/manage/_css/body_style.css",
 
         // Drop lists for link/image/media/template dialogs
-        template_external_list_url : "/manage/tiny_mce/lists/template_list.js",
-        external_link_list_url : "/manage/tiny_mce/lists/link_list.js",
-        external_image_list_url : "/manage/tiny_mce/lists/image_list.js",
-        media_external_list_url : "/manage/tiny_mce/lists/media_list.js",
+        template_external_list_url : "/manage/manage/tiny_mce/lists/template_list.js",
+        external_link_list_url : "/manage/manage/tiny_mce/lists/link_list.js",
+        external_image_list_url : "/manage/manage/tiny_mce/lists/image_list.js",
+        media_external_list_url : "/manage/manage/tiny_mce/lists/media_list.js",
 
         // Replace values for the template plugin
         template_replace_values : {
@@ -54,6 +56,24 @@ tinyMCE.init({
                 staffid : "991234"
         }
 });
+function filebrowser(field_name, url, type, win) {
+    
+    fileBrowserURL = "/manage/manage/tiny_mce/pdw_file_browser/index.php?editor=tinymce&filter=" + type;
+      
+    tinyMCE.activeEditor.windowManager.open({
+        title: "PDW File Browser",
+        url: fileBrowserURL,
+        width: 950,
+        height: 650,
+        inline: 0,
+        maximizable: 1,
+        close_previous: 0
+      },{
+        window : win,
+        input : field_name
+      }
+    );    
+  }
 </script>
 <!--*********************>> END of Web Editor Tiny MCE Script << **************************************************** -->
 
