@@ -9,7 +9,7 @@ session_start();
 
 ?>
 <?php 
-$where = "file_type in('audio/mpeg','audio/ogg','audio/wav','audio/mp3','video/x-flv','video/mp4','video/webm','video/ogg','video/mpeg','application/x-shockwave-flash') AND domain = ".$_SESSION['domain'];
+$where = "file_type in('audio/mpeg','audio/ogg','audio/wav','audio/mp3','video/x-flv','video/mp4','video/webm','video/ogg','video/mpeg','application/x-shockwave-flash')";
 $table = $_SESSION['user_id'].'_upload_data';
 //==================================================================================
 $total = mysql_query("SELECT * FROM `$table` WHERE $where") or die('Error in total: '.mysql_error());

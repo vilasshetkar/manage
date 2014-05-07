@@ -12,11 +12,11 @@ session_start();
 $where = 'domain = '.$_SESSION['domain'];
 $table = $_SESSION['user_id'].'_content';
 //==================================================================================
-$total = mysql_query("SELECT * FROM `$table` WHERE $where");
+$total = mysql_query("SELECT * FROM `$table` ");
 $count = mysql_num_rows($total);
 $less = $count - 1 ;
 // -------------- Mysql Query for less than 1 rows selection -------------------
-$less_1 = mysql_query("SELECT * FROM `$table` WHERE $where LIMIT 0, ".$less) or die(mysql_error());
+$less_1 = mysql_query("SELECT * FROM `$table` LIMIT 0, ".$less) or die(mysql_error());
 //***************** CHANGE THIS *********************************************
 echo 'var tinyMCELinkList = new Array(
 	// Name, URL
@@ -27,7 +27,7 @@ while($row = mysql_fetch_array($less_1)){
 	'; 
 }
 // ------------------- Mysql Query for last row selection -------------------
-$last = mysql_query("SELECT * FROM `$table` WHERE $where LIMIT $less, $count") or die(mysql_error());
+$last = mysql_query("SELECT * FROM `$table` LIMIT $less, $count") or die(mysql_error());
 while($row = mysql_fetch_array($last)){
 //***************** CHANGE THIS *********************************************
 	echo'["'.substr(($row["title"]),0, 50).'", "index.php?AID='.$row["id"].'"]

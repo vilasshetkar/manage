@@ -9,7 +9,7 @@ session_start();
 
 ?>
 <?php 
-$where = 'file_type in("image/jpeg", "image/png","image/gif") AND domain = '.$_SESSION['domain'].' AND file_for = "web"';
+$where = 'file_type in("image/jpeg", "image/png","image/gif") AND file_for = "web"';
 $table = $_SESSION['user_id'].'_upload_data';
 //==================================================================================
 $total = mysql_query("SELECT * FROM `$table` WHERE $where");

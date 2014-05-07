@@ -10,7 +10,7 @@
 
 	// Settings
 	$save_path = DOCUMENTROOT . rawurldecode($_POST["uploadpath"]); //The path were we will save the file (getcwd() may not be reliable and should be tested in your environment)
-
+	echo "<script>alert(".$save_path.")</script>";
 	$upload_name = "Filedata";
 	
 	// Other variables	
