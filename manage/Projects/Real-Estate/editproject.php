@@ -18,12 +18,12 @@ page_protect();
 tinyMCE.init({
         // General options
         mode : "exact",
-        elements : "content,amenities,specifications,availability,contact,overview,location_map, layout_map, floor_plans",
+        elements : "content,amenities,specifications,availability,contact,overview",
         theme : "advanced",
 		convert_urls: false,
         plugins : "autolink,lists,spellchecker,pagebreak,style,layer,save,table,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template",
 		
-		file_browser_callback : "filebrowser",
+		file_browser_callback : "filebrowser", 
 
         // Theme options
         theme_advanced_buttons1 : "bold,italic,underline,strikethrough,|,sub,sup,|,justifyleft,justifycenter,justifyright,justifyfull,|,styleselect,formatselect,fontselect,fontsizeselect",
@@ -33,6 +33,9 @@ tinyMCE.init({
         theme_advanced_toolbar_align : "left",
         theme_advanced_statusbar_location : "bottom",
         theme_advanced_resizing : true,
+
+		width : "95%",
+		height : "400px",
 
         // Skin options
         skin : "o2k7",
@@ -158,6 +161,87 @@ $result = mysql_query("SELECT * FROM `user_sites` WHERE id=".$_SESSION['domain']
         <td valign="top">
 		<div class="content">
 <!-- InstanceBeginEditable name="content" -->
+<script type="text/javascript">
+tinyMCE.init({
+        // General options
+        mode : "exact",
+        elements : "location_map, layout_map, floor_plans",
+        theme : "advanced",
+		convert_urls: false,
+        plugins : "autolink,lists,spellchecker,pagebreak,style,layer,save,table,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template",
+		
+		file_browser_callback : "filebrowser",
+		
+
+        // Theme options
+        //theme_advanced_buttons2 : "bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,styleselect,formatselect,fontselect,fontsizeselect",
+		
+        theme_advanced_buttons1 : "image,media,code,template,|,fullscreen",
+        theme_advanced_buttons2 : "",
+        theme_advanced_buttons3 : "",
+
+		
+        theme_advanced_toolbar_location : "top",
+        theme_advanced_toolbar_align : "left",
+        theme_advanced_statusbar_location : "bottom",
+        theme_advanced_resizing : true,
+		width : "95%",
+		height : "400px",
+
+        // Skin options
+        skin : "o2k7",
+        skin_variant : "silver",
+
+        // Example content CSS (should be your site CSS)
+        content_css : "/manage/_css/body_style.css",
+
+        // Drop lists for link/image/media/template dialogs
+        template_external_list_url : "/manage/tiny_mce/lists/template_list.php",
+        external_link_list_url : "/manage/tiny_mce/lists/link_list.php",
+        external_image_list_url : "/manage/tiny_mce/lists/image_list.php",
+        media_external_list_url : "/manage/tiny_mce/lists/media_list.php",
+
+        // Replace values for the template plugin
+        template_replace_values : {
+                username : "Some User",
+                staffid : "991234"
+        }
+});
+
+function filebrowser(field_name, url, type, win) {
+    
+    fileBrowserURL = "/manage/tiny_mce/pdw_file_browser/index.php?editor=tinymce&filter=" + type;
+      
+    tinyMCE.activeEditor.windowManager.open({
+        title: "PDW File Browser",
+        url: fileBrowserURL,
+        width: 950,
+        height: 650,
+        inline: 0,
+        maximizable: 1,
+        close_previous: 0
+      },{
+        window : win,
+        input : field_name
+      }
+    );    
+  }
+
+$(document).ready(function(e) {
+    var cont = $("#location_map, #layout_map, #floor_plans");
+	if(cont.html() == ""){
+		//alert("empty");
+		$.get("/manage/tiny_mce/lists/templates/layout.html", function(content) {
+			cont.html(content);
+		});
+		
+	}
+});
+
+
+</script>
+
+
 <?php 
 // Insert Project Image
 if(isset($_FILES['proj_img'])){
@@ -201,132 +285,7 @@ if(isset($_FILES['proj_img'])){
 
 }
 
-// Insert Location Map
-if(isset($_FILES['location_map'])){
-    $errors= array();
-	//foreach($_FILES['proj_img']['tmp_name'] as $key => $tmp_name ){
-		$file_name = $_FILES['location_map']['name'];
-		$file_size =$_FILES['location_map']['size'];
-		$file_tmp =$_FILES['location_map']['tmp_name'];
-		$file_type=$_FILES['location_map']['type'];
-        if($file_size > 2097152){
-			$errors[]='File size must be less than 2 MB';
-        }
-		if ((!$file_type == "image/jpeg") || (!$file_type == "image/png") || (!$file_type == "image/gif")){
-			$errors[]='<strong>File type must be .gif, .png, .jpeg, .jpg only</strong>';			
-				};
-				
 
-       $desired_dir= $propImgFolder; 
-        if(empty($errors)==true){
-            if(is_dir($desired_dir)==false){
-                mkdir("$desired_dir", 0700);		// Create directory if it does not exist
-            }
-            if(file_exists($root."/".$desired_dir."/".$file_name)==false){
-                move_uploaded_file($file_tmp,$root."/".$desired_dir."/".$file_name);
-            }else{									// rename the file if another one exist
-                
-				$file_name=time()."-".$file_name;
-                 rename($file_tmp, $root."/".$desired_dir."/".$file_name) ;	
-				 chmod($root."/".$desired_dir."/".$file_name, 0644);			
-            }
-        }else{
-                foreach($errors as $er) { echo $er.'<br />'; };
-				
-        }
-	if(empty($errors)){
-		echo "Files uploaded Successfully ";
-		$location_map = "http://".$_SERVER['HTTP_HOST']."/".$desired_dir."/".$file_name;
-	}else{
-	$location_map = $_POST['oldlocation_map'];
-}
-}
-
-
-// Insert Location Map
-if(isset($_FILES['layout_map'])){
-    $errors= array();
-	//foreach($_FILES['proj_img']['tmp_name'] as $key => $tmp_name ){
-		$file_name = $_FILES['layout_map']['name'];
-		$file_size =$_FILES['layout_map']['size'];
-		$file_tmp =$_FILES['layout_map']['tmp_name'];
-		$file_type=$_FILES['layout_map']['type'];
-        if($file_size > 2097152){
-			$errors[]='File size must be less than 2 MB';
-        }
-		if ((!$file_type == "image/jpeg") || (!$file_type == "image/png") || (!$file_type == "image/gif")){
-			$errors[]='<strong>File type must be .gif, .png, .jpeg, .jpg only</strong>';			
-				};
-				
-
-       $desired_dir= $propImgFolder; 
-        if(empty($errors)==true){
-            if(is_dir($desired_dir)==false){
-                mkdir("$desired_dir", 0700);		// Create directory if it does not exist
-            }
-            if(file_exists($root."/".$desired_dir."/".$file_name)==false){
-                move_uploaded_file($file_tmp,$root."/".$desired_dir."/".$file_name);
-            }else{									// rename the file if another one exist
-                
-				$file_name=time()."-".$file_name;
-                 rename($file_tmp, $root."/".$desired_dir."/".$file_name) ;	
-				 chmod($root."/".$desired_dir."/".$file_name, 0644);			
-            }
-        }else{
-                foreach($errors as $er) { echo $er.'<br />'; };
-				
-        }
-	if(empty($errors)){
-		echo "Files uploaded Successfully ";
-		$layout_map = "http://".$_SERVER['HTTP_HOST']."/".$desired_dir."/".$file_name;
-	}else{
-	$layout_map = $_POST['oldlayout_map'];
-}
-}
-
-
-// Insert Location Map
-if(isset($_FILES['floor_plans'])){
-    $errors= array();
-	//foreach($_FILES['proj_img']['tmp_name'] as $key => $tmp_name ){
-		$file_name = $_FILES['floor_plans']['name'];
-		$file_size =$_FILES['floor_plans']['size'];
-		$file_tmp =$_FILES['floor_plans']['tmp_name'];
-		$file_type=$_FILES['floor_plans']['type'];
-        if($file_size > 2097152){
-			$errors[]='File size must be less than 2 MB';
-        }
-		if ((!$file_type == "image/jpeg") || (!$file_type == "image/png") || (!$file_type == "image/gif")){
-			$errors[]='<strong>File type must be .gif, .png, .jpeg, .jpg only</strong>';			
-				};
-				
-
-       $desired_dir= $propImgFolder; 
-        if(empty($errors)==true){
-            if(is_dir($desired_dir)==false){
-                mkdir("$desired_dir", 0700);		// Create directory if it does not exist
-            }
-            if(file_exists($root."/".$desired_dir."/".$file_name)==false){
-                move_uploaded_file($file_tmp,$root."/".$desired_dir."/".$file_name);
-            }else{									// rename the file if another one exist
-                
-				$file_name=time()."-".$file_name;
-                 rename($file_tmp, $root."/".$desired_dir."/".$file_name) ;	
-				 chmod($root."/".$desired_dir."/".$file_name, 0644);			
-            }
-        }else{
-                foreach($errors as $er) { echo $er.'<br />'; };
-				
-				
-        }
-	if(empty($errors)){
-		echo "Files uploaded Successfully<br /> ";
-		$floor_plans = "http://".$_SERVER['HTTP_HOST']."/".$desired_dir."/".$file_name;
-	}else{
-	$floor_plans = $_POST['oldfloor_plans'];
-}
-
-}
 // Update project Script
 if(isset($_POST['Update'])){
 $sql = mysql_query("UPDATE `$_SESSION[user_id]_real_project` SET
@@ -343,9 +302,9 @@ $sql = mysql_query("UPDATE `$_SESSION[user_id]_real_project` SET
 `proj_img` = '$proj_img',
 `amenities`= '".str_replace("'","\'",$_POST['amenities'])."',
 `specifications`= '".str_replace("'","\'",$_POST['specifications'])."',
-`location_map`='$location_map',
-`layout_map`='$layout_map',
-`floor_plans`='$floor_plans',
+`location_map`='".str_replace("'","\'",$_POST['location_map'])."',
+`layout_map`='".str_replace("'","\'",$_POST['layout_map'])."',
+`floor_plans`='".str_replace("'","\'",$_POST['floor_plans'])."',
 `availability`= '".str_replace("'","\'",$_POST['availability'])."',
 `contact`= '".str_replace("'","\'",$_POST['contact'])."'
 WHERE id='$_POST[id]'");
@@ -403,9 +362,9 @@ VALUES (
 '$proj_img',
 '".str_replace("'","\'",$_POST['amenities'])."',
 '".str_replace("'","\'",$_POST['specifications'])."',
-'$location_map',
-'$layout_map',
-'$floor_plans',
+'".str_replace("'","\'",$_POST['location_map'])."',
+'".str_replace("'","\'",$_POST['layout_map'])."',
+'".str_replace("'","\'",$_POST['floor_plans'])."',
 '".str_replace("'","\'",$_POST['availability'])."',
 '".str_replace("'","\'",$_POST['contact'])."',
 '$otherDomain')";
@@ -537,23 +496,17 @@ No </td>
       <tr valign="top">
         <td>&nbsp;</td>
         <td>Location Map</td>
-        <td colspan="8"><input name="location_map" type="file" id="location_map"/>
-          <img src="<?php echo $row['location_map'];?>" width="100" />
-          <input name="oldlocation_map" type="hidden" id="oldlocation_map" value="<?php echo $row['location_map'];?>" /></td>
+        <td colspan="8"><textarea name="location_map" id="location_map" cols="50" rows="10" ><?php echo $row['location_map'];?></textarea></td>
       </tr>
       <tr valign="top">
         <td>&nbsp;</td>
-        <td>layout_map</td>
-        <td colspan="8"><input name="layout_map" type="file" id="layout_map"/>
-          <img src="<?php echo $row['layout_map'];?>" width="100" />
-          <input name="oldlayout_map" type="hidden" id="oldlayout_map" value="<?php echo $row['layout_map'];?>" /></td>
+        <td>Layout Map</td>
+        <td colspan="8"><textarea name="layout_map" id="layout_map" cols="50" rows="10" ><?php echo $row['layout_map'];?></textarea></td>
       </tr>
       <tr valign="top">
         <td>&nbsp;</td>
-        <td>floor_plans</td>
-        <td colspan="8"><input name="floor_plans" type="file" id="floor_plans"/>
-          <img src="<?php echo $row['floor_plans'];?>" width="100" />
-          <input name="oldfloor_plans" type="hidden" id="oldfloor_plans" value="<?php echo $row['floor_plans'];?>" /></td>
+        <td>Floor Plans</td>
+        <td colspan="8"><textarea name="floor_plans" id="floor_plans" cols="50" rows="10" ><?php echo $row['floor_plans'];?></textarea></td>
       </tr>
       <tr valign="top" id="bedroomshide2">
         <td>&nbsp;</td>

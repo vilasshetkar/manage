@@ -28,12 +28,12 @@ page_protect();
 tinyMCE.init({
         // General options
         mode : "exact",
-        elements : "content,amenities,specifications,availability,contact,overview,location_map, layout_map, floor_plans",
+        elements : "content,amenities,specifications,availability,contact,overview",
         theme : "advanced",
 		convert_urls: false,
         plugins : "autolink,lists,spellchecker,pagebreak,style,layer,save,table,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template",
 		
-		file_browser_callback : "filebrowser",
+		file_browser_callback : "filebrowser", 
 
         // Theme options
         theme_advanced_buttons1 : "bold,italic,underline,strikethrough,|,sub,sup,|,justifyleft,justifycenter,justifyright,justifyfull,|,styleselect,formatselect,fontselect,fontsizeselect",
@@ -43,6 +43,9 @@ tinyMCE.init({
         theme_advanced_toolbar_align : "left",
         theme_advanced_statusbar_location : "bottom",
         theme_advanced_resizing : true,
+
+		width : "95%",
+		height : "400px",
 
         // Skin options
         skin : "o2k7",
