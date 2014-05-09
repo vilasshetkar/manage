@@ -165,7 +165,7 @@ $result = mysql_query("SELECT * FROM `user_sites` WHERE id=".$_SESSION['domain']
 tinyMCE.init({
         // General options
         mode : "exact",
-        elements : "location_map, layout_map, floor_plans",
+        elements : "location_map, layout_map, floor_plans, logo",
         theme : "advanced",
 		convert_urls: false,
         plugins : "autolink,lists,spellchecker,pagebreak,style,layer,save,table,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template",
@@ -306,7 +306,8 @@ $sql = mysql_query("UPDATE `$_SESSION[user_id]_real_project` SET
 `layout_map`='".str_replace("'","\'",$_POST['layout_map'])."',
 `floor_plans`='".str_replace("'","\'",$_POST['floor_plans'])."',
 `availability`= '".str_replace("'","\'",$_POST['availability'])."',
-`contact`= '".str_replace("'","\'",$_POST['contact'])."'
+`contact`= '".str_replace("'","\'",$_POST['contact'])."',
+`logo`= '".str_replace("'","\'",$_POST['logo'])."'
 WHERE id='$_POST[id]'");
 if(!$sql){
 	echo 'Error: '.mysql_error();
@@ -345,6 +346,7 @@ $query = "INSERT INTO `$_SESSION[user_id]_real_project` (
 `floor_plans`,
 `availability`,
 `contact`,
+`logo`,
 `domain`)
 
 VALUES (
@@ -367,6 +369,7 @@ VALUES (
 '".str_replace("'","\'",$_POST['floor_plans'])."',
 '".str_replace("'","\'",$_POST['availability'])."',
 '".str_replace("'","\'",$_POST['contact'])."',
+'".str_replace("'","\'",$_POST['logo'])."',
 '$otherDomain')";
 
 $sql = mysql_query($query);
@@ -472,11 +475,16 @@ No </td>
       </tr>
       <tr valign="top">
         <td id="text_sub_cat_id3">&nbsp;</td>
-        <td id="text_sub_cat_id3">Project Image</td>
+        <td id="text_sub_cat_id3">* Project Image</td>
         <td colspan="8"><input name="proj_img" type="file" id="proj_img"/>
         <img src="<?php echo $row['proj_img'];?>" width="100" />
         <input type="hidden" name="oldProj_img" value="<?php echo $row['proj_img'];?>" />
         </td>
+      </tr>
+      <tr valign="top">
+        <td id="text_sub_cat_id4">&nbsp;</td>
+        <td id="text_sub_cat_id4">* Project Logo</td>
+        <td colspan="8"><textarea name="logo" id="logo" cols="50" rows="10" ><?php echo $row['logo'];?></textarea></td>
       </tr>
       <tr valign="top" id="subcatdisplay2">
         <td id="text_sub_cat_id2">&nbsp;</td>

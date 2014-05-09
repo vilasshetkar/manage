@@ -1,3 +1,15 @@
+html {
+    overflow-y: scroll;
+    height: 100%;
+    margin: 0px auto;
+    padding: 0;
+}
+body {
+    height: 100%;
+    margin: auto;
+    padding: 0;
+}
+
     .content table tr td a.nav {
 	display: block;
 	background-color: #FCF;
@@ -16,8 +28,6 @@
 	color: #FFF;
 	background-color: #006;
 }
-    </style>
-    <style type="text/css">
     .content table h1 {
 	color: #C00;
 	margin: 0px;
@@ -43,11 +53,6 @@
 	font-size: 16px;
 	font-weight: normal;
 }
-    </style>
-
-<style type="text/css">
-    
-    <!--
 	*{
 	margin: 0px;
 	/* [disabled]padding: 0px; */
@@ -112,11 +117,11 @@ a:hover, a:active, a:focus { /* this group of selectors will give a keyboard nav
 .container {
 	width: 95%;
 	background-color: #FFF;
-	margin: 0 auto; /* the auto value on the sides, coupled with the width, centers the layout */
-	overflow: hidden; /* this declaration makes the .container understand where the floated columns within ends and contain them */
-	min-height: 600px;
+	margin: 0 auto; /* the auto value on the sides, coupled with the width, centers the layout */ /* this declaration makes the .container understand where the floated columns within ends and contain them */
 	min-width: 960px;
 	max-width: 1260px;
+	min-height: 100%;
+	position: relative;
 }
 
 /* ~~ These are the columns for the layout. ~~ 
@@ -212,7 +217,9 @@ ul.nav a:hover, ul.nav a:active, ul.nav a:focus { /* this changes the background
 	padding-left: 10px;
 	margin: 0px;
 	bottom: 0px;
-	position: relative;
+	position: absolute;
+	right: 0;
+	left: 0;
 }
 .footer p {
 	color: #999;
@@ -420,3 +427,4 @@ ul.nav a:hover, ul.nav a:active, ul.nav a:focus { /* this changes the background
 	font-size: 16px;
 	font-weight: normal;
 }
+

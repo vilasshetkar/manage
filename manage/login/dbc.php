@@ -119,7 +119,7 @@ if (!isset($_SESSION['user_id']) && !isset($_SESSION['user_name']) && !isset($_S
 	   }
 
   } else {
-	header("Location: /manage/manage/login/login.php");
+	header("Location: /manage/login/login.php");
 	exit();
 	}
 }

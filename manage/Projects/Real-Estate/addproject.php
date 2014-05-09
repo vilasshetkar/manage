@@ -169,7 +169,7 @@ $result = mysql_query("SELECT * FROM `user_sites` WHERE id=".$_SESSION['domain']
 tinyMCE.init({
         // General options
         mode : "exact",
-        elements : "location_map, layout_map, floor_plans",
+        elements : "location_map, layout_map, floor_plans,logo",
         theme : "advanced",
 		convert_urls: false,
         plugins : "autolink,lists,spellchecker,pagebreak,style,layer,save,table,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template",
@@ -316,6 +316,7 @@ proj_img,
 `floor_plans`,
 `availability`,
 `contact`,
+`logo`,
 `domain`)
 
 VALUES (
@@ -338,6 +339,7 @@ VALUES (
 '".str_replace("'","\'",$_POST['floor_plans'])."',
 '".str_replace("'","\'",$_POST['availability'])."',
 '".str_replace("'","\'",$_POST['contact'])."',
+'".str_replace("'","\'",$_POST['logo'])."',
 '$otherDomain')");
 
 if(!$sql){
@@ -426,6 +428,11 @@ if(!$sql){
           <input type="hidden" name="path" value="/admin/upload/uploaded-files" />
           <input type="hidden" name="file_for" value="<?php echo "proj-".$_GET['proj_floor_plans']."-floor_plans"; ?>" /></td>
         </tr>
+      <tr valign="top">
+        <td>&nbsp;</td>
+        <td>* Project Logo</td>
+        <td colspan="8"><textarea name="logo" id="logo" cols="50" rows="5" ></textarea></td>
+      </tr>
       <tr valign="top">
         <td>&nbsp;</td>
         <td>* Project By</td>
