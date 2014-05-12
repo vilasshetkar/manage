@@ -176,7 +176,7 @@ tinyMCE.init({
         // Theme options
         //theme_advanced_buttons2 : "bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,styleselect,formatselect,fontselect,fontsizeselect",
 		
-        theme_advanced_buttons1 : "image,media,code,template,|,fullscreen",
+        theme_advanced_buttons1 : "link,unlink,|,image,media,code,template,|,fullscreen",
         theme_advanced_buttons2 : "",
         theme_advanced_buttons3 : "",
 
@@ -231,10 +231,9 @@ $(document).ready(function(e) {
     var cont = $("#location_map, #layout_map, #floor_plans");
 	if(cont.html() == ""){
 		//alert("empty");
-		$.get("/manage/tiny_mce/lists/templates/layout.html", function(content) {
+		$.get("/manage/tiny_mce/lists/templates/two-row-six-image.html", function(content) {
 			cont.html(content);
 		});
-		
 	}
 });
 
@@ -304,6 +303,7 @@ $sql = mysql_query("UPDATE `$_SESSION[user_id]_real_project` SET
 `specifications`= '".str_replace("'","\'",$_POST['specifications'])."',
 `location_map`='".str_replace("'","\'",$_POST['location_map'])."',
 `layout_map`='".str_replace("'","\'",$_POST['layout_map'])."',
+`browsertitle_floorplan`='".str_replace("'","\'",$_POST['browsertitle_floorplan'])."',
 `floor_plans`='".str_replace("'","\'",$_POST['floor_plans'])."',
 `availability`= '".str_replace("'","\'",$_POST['availability'])."',
 `contact`= '".str_replace("'","\'",$_POST['contact'])."',
@@ -343,6 +343,7 @@ $query = "INSERT INTO `$_SESSION[user_id]_real_project` (
 `specifications`,
 `location_map`,
 `layout_map`,
+`browsertitle_floorplan`,
 `floor_plans`,
 `availability`,
 `contact`,
@@ -366,6 +367,7 @@ VALUES (
 '".str_replace("'","\'",$_POST['specifications'])."',
 '".str_replace("'","\'",$_POST['location_map'])."',
 '".str_replace("'","\'",$_POST['layout_map'])."',
+'$_POST[browsertitle_floorplan]',
 '".str_replace("'","\'",$_POST['floor_plans'])."',
 '".str_replace("'","\'",$_POST['availability'])."',
 '".str_replace("'","\'",$_POST['contact'])."',
@@ -513,12 +515,17 @@ No </td>
       </tr>
       <tr valign="top">
         <td>&nbsp;</td>
+        <td>Browser Title Floor Plan</td>
+        <td colspan="8"><textarea name="browsertitle_floorplan" cols="70" id="browsertitle_floorplan"><?php echo $row['browsertitle_floorplan']; ?></textarea></td>
+      </tr>
+      <tr valign="top">
+        <td>&nbsp;</td>
         <td>Floor Plans</td>
         <td colspan="8"><textarea name="floor_plans" id="floor_plans" cols="50" rows="10" ><?php echo $row['floor_plans'];?></textarea></td>
       </tr>
       <tr valign="top" id="bedroomshide2">
         <td>&nbsp;</td>
-        <td>* Availabillity</td>
+        <td>* Walk Through</td>
         <td colspan="8"><textarea name="availability" cols="50" rows="10" id="availability" required="required"><?php echo $row['availability'];?></textarea></td>
       </tr>
       <tr valign="top" id="bedroomshide3">

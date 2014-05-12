@@ -242,7 +242,7 @@ if(isset($_POST['reply'])){
 $sql = mysql_query("UPDATE `$_SESSION[user_id]_real_response` SET `reply` = 'Yes', reply_msg='$_POST[reply_msg]' WHERE `id` = '$_POST[msg_id]'") or die(mysql_error());
 echo '<script type="text/javascript">window.history.go(-3),location.reload();</script>';
 
-$ml = mail($_POST['to'],$_POST['subject'],$_POST['message'],"From: ".$_POST['from']);
+$ml = mail($_POST['to'],$_POST['subject'],$_POST['reply_msg'],"From: ".$_POST['from']);
 if($ml){
 	echo 'Mail has sent to: '.$_POST['to'].'.';
 	}
@@ -394,13 +394,19 @@ while($row = mysql_fetch_array($view_mail)){ ?>
     <tr>
       <td width="8%" valign="top">Reply:</td>
       <td width="65%"><form id="form1" name="form1" method="post" action="">
+        <?php if($row['reply_msg']=="") { ?>
+        Subject:<br />
+        <input type="text" style="width:80%" name="subject" id="subject" value="Thank You for enquiry : Jaidev Landmarks"/><br /><br />
+        Reply From:<br />
+        <input type="text" style="width:80%;"  name="from" id="from" value="<?php echo $_SESSION['user_email'];?>"/>
+        <br /><br />
+        <?php } ?>
         <span id="sprytextarea1">
-        <textarea name="reply_msg" id="reply_msg" cols="60" rows="5" <?php if($row['reply_msg']!="") echo 'disabled="disabled"';?> ><?php echo $row['reply_msg'];?></textarea><br />
+        Reply Message:<br />
+        <textarea name="reply_msg" style="width:80%" id="reply_msg" cols="60" rows="5" <?php if($row['reply_msg']!="") echo 'disabled="disabled"';?> ><?php echo $row['reply_msg'];?></textarea><br />
         Remaining Chars.: <span id="countsprytextarea1">&nbsp;</span><span class="textareaMinCharsMsg">Minimum number of characters not met.</span><span class="textareaMaxCharsMsg">Exceeded maximum number of characters.</span><span class="textareaRequiredMsg">A value is required.</span></span>
         <input type="hidden" name="msg_id" id="msg_id" value="<?php echo $row['id'];?>"/>
-        <input type="hidden" name="from" id="from" value="<?php echo $_SESSION['user_email'];?>"/>
         <input type="hidden" name="to" id="to" value="<?php echo $row['email'];?>"/>
-        <input type="hidden" name="subject" id="subject" value="<?php echo $row['email'];?>"/>
         <input type="submit" name="reply" id="reply" value="Send Reply"  <?php if($row['reply_msg']!="") echo 'disabled="disabled"';?>  />
       </form></td>
       <td valign="top">&nbsp;</td>

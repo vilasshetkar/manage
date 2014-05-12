@@ -60,7 +60,7 @@ if(!isset($_SESSION)){ session_start();}
  * $uploadpath = '/images/upload/';
  *
  */
-$uploadpath = "/uploadedFiles/"; // absolute path from root to upload folder (DON'T FORGET SLASHES)
+$uploadpath = "/uploaded-files/"; // absolute path from root to upload folder (DON'T FORGET SLASHES)
 
 /*
  * DEFAULT TIMEZONE
